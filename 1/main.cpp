@@ -1,12 +1,21 @@
-#include <stdio>
+#include <iostream>
+#include <fstream>
+using namespace std;
 
-void main(void){
+int main(void) {
 
-	FILE* fp;
+	string line;
+	ifstream myfile("strecken/Strecken_1000.dat");
+	if (myfile.is_open()) {
+		while (myfile.good()) {
+			getline(myfile, line);
+			cout << line << endl;
+		}
+		myfile.close();
+	}
+	else
+		cout << "Unable to open file";
 
-	fp = fopen()
+	return 0;
 }
-
-
-
 
