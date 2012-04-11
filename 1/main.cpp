@@ -3,19 +3,24 @@
 #include <vector>
 using namespace std;
 
+#include "line.h"
+
 int main(void) {
 
-	vector<float[4]> points;
-	string line;
+	vector<line> lines;
+	string sline;
 	float a[4];
 	ifstream myfile("strecken/Strecken_1000.dat");
 	if (myfile.is_open()) {
 		while (myfile.good()) {
-			getline(myfile, line);
+			getline(myfile, sline);
 
-			sscanf(line.c_str(), "%f %f %f %f", &a[0], &a[1], &a[2], &a[3]);
-
-			cout << "zahlen: " << a[0] << a[1] << a[2] << a[3] << endl;
+			sscanf(sline.c_str(), "%f %f %f %f", &a[0], &a[1], &a[2], &a[3]);
+			line* tmp = new line(a[0], a[1], a[2], a[3]);
+			//TODO: aktuellen Wert in Vector schreiben
+			lines.push_back(*tmp);
+			delete tmp;
+			//cout << "zahlen: " << a[0] << a[1] << a[2] << a[3] << endl;
 
 		}
 		myfile.close();
