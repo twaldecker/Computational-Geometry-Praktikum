@@ -1,15 +1,20 @@
 #ifndef POINT2D_H_
 #define POINT2D_H_
 
-class point2d {
+class Point2d {
 private:
-	float x;
-	float y;
+  float x;
+  float y;
 public:
-	point2d(float x = 0, float y = 0);
-	virtual ~point2d();
-	float getX(){return x;}
-	float getY(){return y;}
+  Point2d( float x = 0, float y = 0 );
+  virtual ~Point2d();
+
+  float getX() const {
+    return x;
+  }
+  float getY() const {
+    return y;
+  }
 };
 
 #endif /* POINT2D_H_ */

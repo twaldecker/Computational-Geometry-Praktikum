@@ -5,29 +5,38 @@ using namespace std;
 
 #include "line.h"
 
-int main(void) {
+#define DEBUG 1
 
-	vector<line> lines;
-	string sline;
-	float a[4];
-	ifstream myfile("strecken/Strecken_1000.dat");
-	if (myfile.is_open()) {
-		while (myfile.good()) {
-			getline(myfile, sline);
+int main( void ) {
 
-			sscanf(sline.c_str(), "%f %f %f %f", &a[0], &a[1], &a[2], &a[3]);
-			line* tmp = new line(a[0], a[1], a[2], a[3]);
-			//TODO: aktuellen Wert in Vector schreiben
-			lines.push_back(*tmp);
-			delete tmp;
-			//cout << "zahlen: " << a[0] << a[1] << a[2] << a[3] << endl;
+  vector<Line *> lines;
+  string strline;
+  float a[4];
+  ifstream myfile( "strecken/Strecken_1000.dat" );
 
-		}
-		myfile.close();
-	}
-	else
-		cout << "Unable to open file";
+  if( myfile.is_open() ) {
+    while( myfile.good() ) {
+      getline( myfile, strline );
+      /* parse line of file */
+      sscanf( strline.c_str(), "%f %f %f %f", &a[0], &a[1], &a[2], &a[3] );
+      /* store values in vector */
+      Line* tmpin = new Line( a[0], a[1], a[2], a[3] );
+      lines.push_back( tmpin );
 
-	return 0;
+#ifdef DEBUG
+      /* debug output */
+      cout << "Input:  " << a[0] << " " << a[1] << " " << a[2] << " " << a[3]
+          << endl;
+      Line* tmpout = lines.back();
+      cout << "Vector: " << tmpout->getA().getX() << " "
+          << tmpout->getA().getY() << " " << tmpout->getB().getX() << " "
+          << tmpout->getB().getY() << " " << endl;
+#endif /* DEBUG */
+    }
+    myfile.close();
+  }
+  else
+    cout << "Unable to open file";
+
+  return 0;
 }
-

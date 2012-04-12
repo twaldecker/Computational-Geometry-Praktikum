@@ -3,14 +3,21 @@
 
 #include "point2d.h"
 
-class line {
+class Line {
 private:
-	point2d a,b;
+  Point2d a, b;
 
 public:
-	line(point2d a, point2d b);
-	line(float ax, float ay, float bx, float by);
-	virtual ~line();
+  Line( Point2d a, Point2d b );
+  Line( float ax, float ay, float bx, float by );
+  virtual ~Line();
+
+  Point2d getA() const {
+    return a;
+  }
+  Point2d getB() const {
+    return b;
+  }
 };
 
 #endif /* LINE_H_ */
