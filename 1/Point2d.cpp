@@ -1,6 +1,6 @@
-#include "point2d.h"
+#include "Point2d.h"
 
-Point2d::Point2d( float x, float y ) :
+Point2d::Point2d( const float x, const float y ) :
     x( x ), y( y ) {
 
 }
