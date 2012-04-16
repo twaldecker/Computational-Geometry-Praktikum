@@ -1,10 +1,3 @@
-/*
- * FileParser.cpp
- *
- *  Created on: Apr 14, 2012
- *      Author: thomas
- */
-
 #include "IntersectionTest.h"
 
 IntersectionTest::IntersectionTest( string filename ) :
@@ -15,10 +8,12 @@ IntersectionTest::IntersectionTest( string filename ) :
  *  open file and scream if I can not open it
  */
 int IntersectionTest::open() {
-  file.open( filename.c_str() );
+
+  file.open( filename.c_str(), ios::in );
+
   if( !file.is_open() ) {
-    cerr << "File not found";
-    return 1;
+    cerr << "File " << filename << " not found";
+    exit(1);
   }
   return 0;
 }
@@ -42,6 +37,13 @@ void IntersectionTest::calculateIntersections() {
   /* stop time */
   stop = clock();
 }
+
+void IntersectionTest::printResults() {
+  cout << "Number of Lines: " << lines.size() << "\n"
+       << intersectionCount << " intersections\n calculated in "
+       << getTime() << " seconds";
+
+};
 
 /* process the file line by line */
 int IntersectionTest::parse() {
