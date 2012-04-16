@@ -8,7 +8,7 @@
 #include "IntersectionTest.h"
 
 IntersectionTest::IntersectionTest( string filename ) :
-    filename( filename ) {
+    filename( filename ), intersectionCount(0) {
 }
 
 /**
@@ -21,6 +21,26 @@ int IntersectionTest::open() {
     return 1;
   }
   return 0;
+}
+
+void IntersectionTest::calculateIntersections() {
+  /* the file is now processed, the values are in the vector. Now its time to calculate and start the clock */
+  /* Note: the outer loop loops over all entries in the vector.
+   * The inner loop loops over outerit+1.
+   * So we do test two lines only one time with each other and not with itself.
+   */
+  start = clock();
+  /* intersection calculation with two iterator-loops */
+  for( vector<Line *>::iterator outerit = lines.begin(); outerit != lines.end();
+      outerit++ ) {
+    for( vector<Line *>::iterator innerit = outerit + 1;
+        innerit != lines.end(); innerit++ ) {
+      if( (*outerit)->intersect(*innerit) )
+        intersectionCount++;
+    }
+  }
+  /* stop time */
+  stop = clock();
 }
 
 /* process the file line by line */
