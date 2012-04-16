@@ -12,7 +12,7 @@ int IntersectionTest::open() {
   file.open( filename.c_str(), ios::in );
 
   if( !file.is_open() ) {
-    cerr << "File " << filename << " not found";
+    cerr << "File " << filename << " not found\n";
     exit(1);
   }
   return 0;
