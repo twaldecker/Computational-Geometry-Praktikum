@@ -15,7 +15,7 @@
 
 using namespace std;
 
-class FileParser {
+class IntersectionTest {
 
 private:
   ifstream file;
@@ -24,8 +24,8 @@ private:
   int open();
 
 public:
-  FileParser(string);
-  virtual ~FileParser();
+  IntersectionTest(string);
+  virtual ~IntersectionTest();
   vector<Line *> * getLines() { return &lines; };
   int parse();
 };

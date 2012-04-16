@@ -3,15 +3,18 @@
 using namespace std;
 
 #include "Line.h"
-#include "FileParser.h"
+#include "IntersectionTest.h"
 
 #define DEBUG 1
 
 int main( void ) {
 
-  FileParser * p = new FileParser("strecken/Strecken_Test.dat");
+  IntersectionTest * p = new IntersectionTest("strecken/Strecken_Test.dat");
   p->parse();
   vector<Line *> * lines = p->getLines();
+
+
+
 
 
   long counter = 0;
