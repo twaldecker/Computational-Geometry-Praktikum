@@ -5,7 +5,7 @@ IntersectionTest::IntersectionTest( string filename ) :
 }
 
 /**
- *  open file and scream if I can not open it
+ *  open file and kill me if i cant open it.
  */
 int IntersectionTest::open() {
 

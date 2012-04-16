@@ -16,7 +16,7 @@ private:
 
   ifstream file;
   string filename;
-  clock_t start, stop;
+  clock_t start, stop; /* timestamps */
   long intersectionCount; /* count the intersections */
   vector<Line *> lines; /* a vector containing pointer to Lines */
 
