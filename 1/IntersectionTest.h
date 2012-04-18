@@ -32,7 +32,7 @@ public:
   int parse();
 
   vector<Line *> * getLines() { return &lines; };
-  float getTime(){ return stop-start / CLOCKS_PER_SEC; };
+  float getTime(){ return (float)(stop-start) / CLOCKS_PER_SEC; };
 };
 
 #endif /* FILEPARSER_H_ */

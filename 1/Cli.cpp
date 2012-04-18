@@ -18,7 +18,7 @@ Cli::Cli( int argc, char* argv[] ) {
      * check for exact match,
      * only one filename possible for now */
     if(optind+1 != argc) {
-      cerr << "Wrong number of options\n";
+      cerr << "Wrong number of options" << endl;
       help();
       exit(1);
     }
@@ -26,9 +26,10 @@ Cli::Cli( int argc, char* argv[] ) {
 }
 
 void Cli::help(){
-  cout << "strecken - a program to calculate intersections of lines.\n"
-       << "usage:\n" << " strecken [-h] filename\n"
-       << " -h displays this help message\n";
+  cout << "strecken - a program to calculate intersections of lines." << endl
+       << "usage:" << endl
+       << " strecken [-h] filename" << endl
+       << " -h displays this help message" << endl;
 }
 
 Cli::~Cli() {

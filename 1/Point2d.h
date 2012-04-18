@@ -28,7 +28,7 @@ public:
   float ccw( const Point2d q, const Point2d r ) {
     return ( ( this->getX() * q.getY() - this->getY() * q.getX() )
         + ( q.getX() * r.getY() - q.getY() * r.getX() )
-        + ( this->getY() * r.getX() ) );
+        + ( this->getY() * r.getX() - this->getX() * r.getY() ) ); /* last difference was missing */
   }
 
 };

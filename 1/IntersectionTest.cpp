@@ -1,5 +1,7 @@
 #include "IntersectionTest.h"
 
+#define DEBUG 0
+
 IntersectionTest::IntersectionTest( string filename ) :
     filename( filename ), intersectionCount(0) {
 }
@@ -12,7 +14,7 @@ int IntersectionTest::open() {
   file.open( filename.c_str(), ios::in );
 
   if( !file.is_open() ) {
-    cerr << "File " << filename << " not found\n";
+    cerr << "File " << filename << " not found" << endl;
     exit(1);
   }
   return 0;
@@ -39,23 +41,20 @@ void IntersectionTest::calculateIntersections() {
 }
 
 void IntersectionTest::printResults() {
-  cout << "Number of Lines: " << lines.size() << "\n"
-       << intersectionCount << " intersections\n calculated in "
-       << getTime() << " seconds";
+  cout << "Number of Lines: " << lines.size() << endl
+       << intersectionCount << " intersections" << endl
+       << "calculated in " << getTime() << " seconds" << endl;
 
 };
 
 /* process the file line by line */
 int IntersectionTest::parse() {
+  float a[4]; /* a temporary array to store the values */
+  string strline; /* one line of the file */
   open(); // first open the file, then read
-  while( !file.eof() ) {
+  while( getline( file, strline ) ) {
     /* read line, parse float values and store in temporary array */
-    float a[4]; /* a temporary array to store the values */
-    string strline; /* one line of the file */
-
-    getline( file, strline );
     sscanf( strline.c_str(), "%f %f %f %f", &a[0], &a[1], &a[2], &a[3] );
-
     /* create a new Line object and store it in the vector */
     Line* tmpin = new Line( a[0], a[1], a[2], a[3] );
     lines.push_back( tmpin );
