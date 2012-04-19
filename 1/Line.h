@@ -37,8 +37,10 @@ public:
    * calculate if this line intersects with the provided Line l
    */
   bool intersect( const Line* l ) const {
-    if( ( this->ccw(l->getA()) * this->ccw(l->getB()) <= 0 )
-        && ( l->ccw(this->getA()) * l->ccw(this->getB()) <= 0 ) )
+    float a = this->ccw(l->getA()) * this->ccw(l->getB());
+    float b = l->ccw(this->getA()) * l->ccw(this->getB());
+    if( ( a <= 0 )
+        && ( b <= 0 ) )
       return true;
     else
       return false;
