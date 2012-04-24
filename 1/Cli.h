@@ -19,7 +19,10 @@ public:
   Cli( int argc, char *argv[] );
   virtual ~Cli();
 
-  string getFilename() { return filename; };
+  string getFilename() {
+    return filename;
+  }
+  ;
 };
 
 #endif /* CLI_H_ */

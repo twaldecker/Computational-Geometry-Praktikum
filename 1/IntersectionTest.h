@@ -24,15 +24,21 @@ private:
 
 public:
 
-  IntersectionTest(string);
+  IntersectionTest( string );
   virtual ~IntersectionTest();
 
   void calculateIntersections();
   void printResults();
   int parse();
 
-  vector<Line *> * getLines() { return &lines; };
-  float getTime(){ return (float)(stop-start) / CLOCKS_PER_SEC; };
+  vector<Line *> * getLines() {
+    return &lines;
+  }
+  ;
+  float getTime() {
+    return (float) ( stop - start ) / CLOCKS_PER_SEC;
+  }
+  ;
 };
 
 #endif /* FILEPARSER_H_ */

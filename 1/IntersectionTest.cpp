@@ -3,7 +3,7 @@
 #define DEBUG 0
 
 IntersectionTest::IntersectionTest( string filename ) :
-    filename( filename ), intersectionCount(0) {
+    filename( filename ), intersectionCount( 0 ) {
 }
 
 /**
@@ -15,7 +15,7 @@ int IntersectionTest::open() {
 
   if( !file.is_open() ) {
     cerr << "File " << filename << " not found" << endl;
-    exit(1);
+    exit( 1 );
   }
   return 0;
 }
@@ -30,9 +30,9 @@ void IntersectionTest::calculateIntersections() {
   /* intersection calculation with two iterator-loops */
   for( vector<Line *>::iterator outerit = lines.begin(); outerit != lines.end();
       outerit++ ) {
-    for( vector<Line *>::iterator innerit = outerit + 1;
-        innerit != lines.end(); innerit++ ) {
-      if( (*outerit)->intersect(*innerit) )
+    for( vector<Line *>::iterator innerit = outerit + 1; innerit != lines.end();
+        innerit++ ) {
+      if( ( *outerit )->intersect( *innerit ) )
         intersectionCount++;
     }
   }
@@ -41,11 +41,12 @@ void IntersectionTest::calculateIntersections() {
 }
 
 void IntersectionTest::printResults() {
-  cout << "Number of Lines: " << lines.size() << endl
-       << intersectionCount << " intersections" << endl
-       << "calculated in " << getTime() << " seconds" << endl;
+  cout << "Number of Lines: " << lines.size() << endl << intersectionCount
+      << " intersections" << endl << "calculated in " << getTime() << " seconds"
+      << endl;
 
-};
+}
+;
 
 /* process the file line by line */
 int IntersectionTest::parse() {

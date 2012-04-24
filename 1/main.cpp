@@ -3,9 +3,9 @@
 
 int main( int argc, char *argv[] ) {
 
-  Cli * cli = new Cli(argc, argv);
+  Cli * cli = new Cli( argc, argv );
 
-  IntersectionTest * p = new IntersectionTest(cli->getFilename());
+  IntersectionTest * p = new IntersectionTest( cli->getFilename() );
   p->parse();
 
   p->calculateIntersections();
