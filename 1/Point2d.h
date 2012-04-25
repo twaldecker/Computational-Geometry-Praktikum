@@ -1,6 +1,8 @@
 #ifndef POINT2D_H_
 #define POINT2D_H_
 
+#include <math.h>
+
 class Point2d {
 private:
   float x;
@@ -23,12 +25,19 @@ public:
   }
 
   /**
+   * calculate the zero-vector of this point
+   */
+  float length() {
+    return ( sqrt( this->getX() * this->getX() + this->getY() * this->getY() ) );
+  }
+
+  /**
    * calculate the ccw with this point and two more Point2d q and r
    */
   float ccw( const Point2d q, const Point2d r ) {
     return ( ( this->getX() * q.getY() - this->getY() * q.getX() )
         + ( q.getX() * r.getY() - q.getY() * r.getX() )
-        + ( this->getY() * r.getX() - this->getX() * r.getY() ) ); /* last difference was missing */
+        + ( this->getY() * r.getX() - this->getX() * r.getY() ) );
   }
 
   Point2d operator-( const Point2d& q ) {
@@ -37,6 +46,10 @@ public:
 
   Point2d operator/( const Point2d& q ) {
     return Point2d( this->getX() / q.getX(), this->getY() / q.getY() );
+  }
+
+  bool operator==( const Point2d& q ) {
+    return ( ( this->getX() == q.getX() ) && ( this->getY() == q.getY() ) );
   }
 
 };
