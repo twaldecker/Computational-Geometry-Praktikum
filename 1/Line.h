@@ -51,6 +51,11 @@ public:
       Point2d lambda2 = ( l->getB() - this->getA() )
           / ( this->getB() - this->getA() );
 
+
+
+
+
+
       /* the two elements of lambda are identical because of collinearity */
       if( ( lambda1.getX() >= 0 && lambda1.getX() <= 1 )
           || ( lambda2.getX() >= 0 && lambda2.getX() <= 1 ) )
