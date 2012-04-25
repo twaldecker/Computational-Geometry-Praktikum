@@ -55,13 +55,13 @@ public:
       if( ( lambda1.getX() >= 0 && lambda1.getX() <= 1 )
           || ( lambda2.getX() >= 0 && lambda2.getX() <= 1 ) )
         return true;
-
+      else
+        return false;
     }
 
     /* lines are not collinear -> check for intersection and(!) contact */
     if( ( ( ccwta * ccwtb ) <= 0 ) && ( ( ccwat * ccwbt ) <= 0 ) )
       return true;
-
     return false;
   }
 };
