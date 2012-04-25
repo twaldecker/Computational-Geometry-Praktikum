@@ -1,7 +1,6 @@
 #ifndef LINE_H_
 #define LINE_H_
 
-
 #include "Point2d.h"
 
 class Line {
@@ -39,7 +38,7 @@ public:
    */
   float length() const {
     Point2d len = this->getA() - this->getB();
-    return( len.length() );
+    return ( len.length() );
   }
 
   /**
@@ -54,16 +53,24 @@ public:
 
     /* check collinearity of the two lines */
     if( ccwta == 0 && ccwtb == 0 ) {
-      //Line* p, q;
-      /* add method in line class to calculate length */
+      const Line* p, *q;
+
+      /* check for four identical points */
+      if( this->length() == 0 && l->length() == 0 )
+        return ( this->getA() == l->getA() );
 
       /* compare length of lines and assign pointers */
-
+      if( this->length() < l->length() ) {
+        p = l;
+        q = this;
+      }
+      else {
+        p = this;
+        q = l;
+      }
       /* lines are collinear -> calculate the lambda from parametric form */
-      Point2d lambda1 = ( l->getA() - this->getA() )
-          / ( this->getB() - this->getA() );
-      Point2d lambda2 = ( l->getB() - this->getA() )
-          / ( this->getB() - this->getA() );
+      Point2d lambda1 = ( q->getA() - p->getA() ) / ( p->getB() - p->getA() );
+      Point2d lambda2 = ( q->getB() - p->getA() ) / ( p->getB() - p->getA() );
 
 
 
