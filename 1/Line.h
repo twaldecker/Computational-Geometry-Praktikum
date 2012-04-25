@@ -1,6 +1,7 @@
 #ifndef LINE_H_
 #define LINE_H_
 
+
 #include "Point2d.h"
 
 class Line {
@@ -34,6 +35,14 @@ public:
   }
 
   /**
+   * calculate the length of this line
+   */
+  float length() const {
+    Point2d len = this->getA() - this->getB();
+    return( len.length() );
+  }
+
+  /**
    * calculate if this line intersects with the provided Line l
    */
   bool intersect( const Line* l ) const {
@@ -45,6 +54,11 @@ public:
 
     /* check collinearity of the two lines */
     if( ccwta == 0 && ccwtb == 0 ) {
+      //Line* p, q;
+      /* add method in line class to calculate length */
+
+      /* compare length of lines and assign pointers */
+
       /* lines are collinear -> calculate the lambda from parametric form */
       Point2d lambda1 = ( l->getA() - this->getA() )
           / ( this->getB() - this->getA() );
@@ -58,7 +72,9 @@ public:
 
       /* the two elements of lambda are identical because of collinearity */
       if( ( lambda1.getX() >= 0 && lambda1.getX() <= 1 )
-          || ( lambda2.getX() >= 0 && lambda2.getX() <= 1 ) )
+          || ( lambda1.getY() >= 0 && lambda1.getY() <= 1 )
+          || ( lambda2.getX() >= 0 && lambda2.getX() <= 1 )
+          || ( lambda2.getY() >= 0 && lambda2.getY() <= 1 ) )
         return true;
       else
         return false;
