@@ -42,21 +42,22 @@ public:
     float ccwat = l->ccw( this->getA() );
     float ccwbt = l->ccw( this->getB() );
     /* check collinearity of the two lines */
-    if( ccwta != 0 || ccwtb != 0 ) {
-      /* lines are not collinear -> check for intersection and(!) contact */
-      if( ( ( ccwta * ccwtb ) <= 0 ) && ( ( ccwat * ccwbt ) <= 0 ) )
+    if( ccwta == 0 && ccwtb == 0 ) {
+      /* lines are collinear -> calculate the lambda from parametric form */
+      Point2d lambda1 = ( l->getA() - this->getA() )
+          / ( this->getB() - this->getA() );
+      Point2d lambda2 = ( l->getB() - this->getA() )
+          / ( this->getB() - this->getA() );
+      /* the two elements of lambda are identical because of collinearity */
+      if( ( lambda1.getX() >= 0 && lambda1.getX() <= 1 )
+          || ( lambda2.getX() >= 0 && lambda2.getX() <= 1 ) )
         return true;
+      else
+        return false;
     }
-    /* lines are collinear -> calculate the lambda from parametric form */
-    Point2d lambda1 = ( l->getA() - this->getA() )
-        / ( this->getB() - this->getA() );
-    Point2d lambda2 = ( l->getB() - this->getA() )
-        / ( this->getB() - this->getA() );
-    /* the two elements of lambda are identical because of collinearity */
-    if( ( lambda1.getX() >= 0 && lambda1.getX() <= 1 )
-        || ( lambda2.getX() >= 0 && lambda2.getX() <= 1 ) )
+    /* lines are not collinear -> check for intersection and(!) contact */
+    if( ( ( ccwta * ccwtb ) <= 0 ) && ( ( ccwat * ccwbt ) <= 0 ) )
       return true;
-
     return false;
   }
 };
