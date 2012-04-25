@@ -46,10 +46,12 @@ public:
    * calculate if this line intersects with the provided Line l
    */
   bool intersect( const Line* l ) const {
+
     float ccwta = this->ccw( l->getA() );
     float ccwtb = this->ccw( l->getB() );
     float ccwat = l->ccw( this->getA() );
     float ccwbt = l->ccw( this->getB() );
+
     /* check collinearity of the two lines */
     if( ccwta == 0 && ccwtb == 0 ) {
       //Line* p, q;
@@ -72,6 +74,7 @@ public:
       else
         return false;
     }
+
     /* lines are not collinear -> check for intersection and(!) contact */
     if( ( ( ccwta * ccwtb ) <= 0 ) && ( ( ccwat * ccwbt ) <= 0 ) )
       return true;
