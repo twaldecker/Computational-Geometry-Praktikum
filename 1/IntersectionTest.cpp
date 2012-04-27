@@ -21,27 +21,34 @@ int IntersectionTest::open() {
 }
 
 void IntersectionTest::calculateIntersections() {
-  /* the file is now processed, the values are in the vector. Now its time to calculate and start the clock */
-  /* Note: the outer loop loops over all entries in the vector.
+  /* the file is now processed, the values are in the vector.
+   * Now its time to calculate and start the clock
+   * Note: the outer loop loops over all entries in the vector.
    * The inner loop loops over outerit+1.
    * So we do test two lines only one time with each other and not with itself.
    */
+  int i = 0, j = 0;
+
   start = clock();
   /* intersection calculation with two iterator-loops */
   for( vector<Line *>::iterator outerit = lines.begin(); outerit != lines.end();
       outerit++ ) {
+    j = i+1;
     for( vector<Line *>::iterator innerit = outerit + 1; innerit != lines.end();
         innerit++ ) {
-      if( ( *outerit )->intersect( *innerit ) )
+      if( ( *outerit )->intersect( *innerit ) ) {
         intersectionCount++;
+        cout << "i: " << i << " j: " << j << endl;
+      }
+      j++;
     }
+    i++;
   }
-  /* stop time */
   stop = clock();
 }
 
 void IntersectionTest::printResults() {
-  cout << "Number of Lines: " << lines.size() << endl << intersectionCount
+  cerr << "Number of Lines: " << lines.size() << endl << intersectionCount
       << " intersections" << endl << "calculated in " << getTime() << " seconds"
       << endl;
 
