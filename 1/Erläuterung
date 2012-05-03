@@ -1,0 +1,73 @@
+*******************************************************************
+* Erläuterungen zum 1. Praktikum Computational Geometry SoSe 2012 *
+* Thomas Waldecker und Stefan Giggenbach                          *
+*******************************************************************
+
+Die zentrale Funktionalität, die Prüfung ob zwei Strecken sich schneiden, ist in
+der Methode intersect der Klasse Line implementiert.
+
+Pseudocode:
+-----------
+
+Berechnung der vier benötigten CCW-Werte
+
+Falls die Strecken kollinear sind
+
+  Falls beide Strecken die Länge 0 bestizten	(1)
+    Falls alle vier Punkte aufeinander liegen
+      Wahr zurückgeben
+    sonst
+      Falsch zurückgeben
+
+  Die längere der beiden Strecken ermitteln
+
+  Ausgehend von der längeren Strecke		(2)
+  Lambda der parametrischen Form bestimmten
+
+  Falls Lambda im Bereich [0;1] liegt		(3)
+    Wahr zurückgeben
+  sonst
+    Falsch zurückgeben
+
+Falls die Produkte der entsprechenden		(4)
+CCW-Werte <= 0
+  Wahr zurückgeben
+sonst
+  Falsch zurückgeben
+
+Anmerkungen:
+------------
+
+(1) Bei dieser Betrachtung wird der Schnitt von zwei entarteten Strecken (also
+das Aufeinanderliegen von insgesamt vier Punkten) berücksichtigt.
+
+(2) Die Bestimmung von Lambda in der parametrischen Form muss von der längeren
+Strecke erfolgen, da geprüft wird ob der zu untersuchende Punkt innerhalb dieser
+Strecke liegt. Liegt eine Strecke komplett innerhlab einer Zweiten, würde der
+Schnitt ausgehend von dieser kürzeren Strecke nicht erkannt werden.
+
+(3) Da bei der Berechnung von Lambda eine Division durch 0 erfolgen kann (z. B.
+bei identischen x- oder y-Koordinaten), müssen bei der Prüfung alle Elemente von
+Lambda untersucht werden.
+
+(4) Die Betrachtung der Produkte der CCW-Werte berücksichtigt auch die
+Berührung von Strecken als Schnitt.
+
+Laufzeit und Ergebnisse:
+------------------------
+
+Der verwendete Brute-Force-Arlgorithmus hat eine Komplexität von O(n²).
+
+Es ergeben sich folgende Laufzeiten und Ergebnisse:
+
+Number of Lines: 1000
+112264 intersections
+calculated in 0.32 seconds
+
+Number of Lines: 10000
+11699006 intersections
+calculated in 31.85 seconds
+
+Number of Lines: 100000
+1155510186 intersections
+calculated in 3201.27 seconds

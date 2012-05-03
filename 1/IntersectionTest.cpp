@@ -38,7 +38,7 @@ void IntersectionTest::calculateIntersections() {
         innerit++ ) {
       if( ( *outerit )->intersect( *innerit ) ) {
         intersectionCount++;
-        cout << "i: " << i << " j: " << j << endl;
+        //cout << "i: " << i << " j: " << j << endl;
       }
       j++;
     }
