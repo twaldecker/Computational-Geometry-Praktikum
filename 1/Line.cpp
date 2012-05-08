@@ -47,7 +47,7 @@ bool Line::intersect( const Line* l ) const {
     Point2d lambda2 = ( q->getB() - p->getA() ) / ( p->getB() - p->getA() );
 
     /* we have to test both elements of lambda.
-     * Maybe we diveded through zero if the line was horizontal or vertical.
+     * Maybe we divided through zero if the line was horizontal or vertical.
      * If one of the elements is between [0,1] of both lambdas we have a intersection.
      */
     if( ( lambda1.getX() >= 0 && lambda1.getX() <= 1 )
