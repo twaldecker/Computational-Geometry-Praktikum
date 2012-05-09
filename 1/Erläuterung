@@ -9,6 +9,8 @@ der Methode intersect der Klasse Line implementiert.
 Pseudocode:
 -----------
 
+Die längere der beiden Strecken ermitteln
+
 Berechnung der vier benötigten CCW-Werte
 
 Falls die Strecken kollinear sind
@@ -18,8 +20,6 @@ Falls die Strecken kollinear sind
       Wahr zurückgeben
     sonst
       Falsch zurückgeben
-
-  Die längere der beiden Strecken ermitteln
 
   Ausgehend von der längeren Strecke		(2)
   Lambda der parametrischen Form bestimmten
@@ -56,18 +56,17 @@ Berührung von Strecken als Schnitt.
 Laufzeit und Ergebnisse:
 ------------------------
 
-Der verwendete Brute-Force-Arlgorithmus hat eine Komplexität von O(n²).
+Der verwendete Brute-Force-Algorithmus hat eine Komplexität von O(n²).
 
 Es ergeben sich folgende Laufzeiten und Ergebnisse:
 
 Number of Lines: 1000
-112264 intersections
-calculated in 0.32 seconds
+111915 intersections
+calculated in 0.42 seconds
 
 Number of Lines: 10000
-11699006 intersections
-calculated in 31.85 seconds
-
+11695678 intersections
+calculated in 40.93 seconds
 Number of Lines: 100000
-1155510186 intersections
-calculated in 3201.27 seconds
+1155477440 intersections
+calculated in 4114.69 seconds
