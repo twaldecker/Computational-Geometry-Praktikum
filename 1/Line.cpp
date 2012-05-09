@@ -25,7 +25,7 @@ bool Line::intersect( const Line* l ) const {
   float ccwbt = l->ccw( this->getB() );
 
   /* check collinearity of the two lines */
-  if( ccwta == 0 && ccwtb == 0 ) { /* lines are collinear */
+  if( fabs(ccwta) <= FLT_EPSILON && fabs(ccwtb) <= FLT_EPSILON ) { /* lines are collinear */
     const Line* p, *q;
 
     /* check for four identical points */
@@ -60,7 +60,7 @@ bool Line::intersect( const Line* l ) const {
   }
 
   /* lines are not collinear -> check for intersection or(!) contact */
-  if( ( ( ccwta * ccwtb ) <= 0 ) && ( ( ccwat * ccwbt ) <= 0 ) )
+  if( ( ( ccwta * ccwtb ) <= FLT_EPSILON ) && ( ( ccwat * ccwbt ) <= FLT_EPSILON ) )
     return true;
   return false;
 }

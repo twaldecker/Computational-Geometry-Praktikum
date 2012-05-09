@@ -2,6 +2,7 @@
 #define LINE_H_
 
 #include "Point2d.h"
+#include <cfloat>
 
 class Line {
 private:
