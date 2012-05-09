@@ -19,28 +19,31 @@ Line::~Line() {
  */
 bool Line::intersect( const Line* l ) const {
 
-  float ccwta = this->ccw( l->getA() );
-  float ccwtb = this->ccw( l->getB() );
-  float ccwat = l->ccw( this->getA() );
-  float ccwbt = l->ccw( this->getB() );
+  const Line* p, *q;
+  /* compare length of lines and assign pointers */
+  if( this->length() < l->length() ) {
+    p = l;
+    q = this;
+  }
+  else {
+    p = this;
+    q = l;
+  } /* p is now the line longer or the same length then q */
+
+
+  float ccwta = p->ccw( q->getA() );
+  float ccwtb = p->ccw( q->getB() );
+  float ccwat = q->ccw( p->getA() );
+  float ccwbt = q->ccw( p->getB() );
 
   /* check collinearity of the two lines */
   if( fabs(ccwta) <= FLT_EPSILON && fabs(ccwtb) <= FLT_EPSILON ) { /* lines are collinear */
-    const Line* p, *q;
+
 
     /* check for four identical points */
-    if( this->length() == 0 && l->length() == 0 )
-      return ( this->getA() == l->getA() );
+    if( p->length() == 0 && q->length() == 0 )
+      return ( p->getA() == q->getA() );
 
-    /* compare length of lines and assign pointers */
-    if( this->length() < l->length() ) {
-      p = l;
-      q = this;
-    }
-    else {
-      p = this;
-      q = l;
-    } /* p is now the line longer or the same length then q */
 
     /* now we test if the start or endpoint from q is in p */
     Point2d lambda1 = ( q->getA() - p->getA() ) / ( p->getB() - p->getA() );
