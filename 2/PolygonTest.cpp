@@ -28,7 +28,18 @@ void PolygonTest::calculatePiP() {
 }
 
 void PolygonTest::printResults() {
+  for( vector<State *>::iterator stateit = states.begin();
+      stateit != states.end(); stateit++ ) {
+    cout << "State " << ( *stateit )->getID() << " contains "
+        << ( *stateit )->getPolygons()->size() << " polygon(s) and ";
 
+    for( vector<Polygon *>::iterator polyit =
+        ( *stateit )->getPolygons()->begin();
+        polyit != ( *stateit )->getPolygons()->end(); polyit++ ) {
+      cout << ( *polyit )->getPoints()->size() << " ";
+    }
+    cout << " point(s)." << endl;
+  }
 }
 
 int PolygonTest::parse() {
@@ -48,16 +59,12 @@ int PolygonTest::parse() {
         size_t pos2 = strline.find( " ", pos1 + 1 );
         id = strline.substr( pos1 + 4, pos2 - ( pos1 + 4 ) - 1 );
         tmpstate->setID( id );
-        cout << "State \"" << tmpstate->getID() << "\" contains ";
       } /* else part to check further lines for id */
+
       Polygon * tmppoly = new Polygon();
       while( getline( file, strline ) ) {
         if( strline.find( "/>" ) != string::npos ) {
-          tmpstate->addPolygon( tmppoly );
           states.push_back( tmpstate );
-          cout << tmpstate->getPolygons()->size() << " polygon(s) and "
-              << tmpstate->getPolygons()->back()->getPoints()->size()
-              << " point(s)." << endl;
           break;
         }
         else {
@@ -69,6 +76,8 @@ int PolygonTest::parse() {
           switch( *type ) {
           case ( 'Z' ):
           case ( 'z' ):
+            tmpstate->addPolygon( tmppoly );
+            tmppoly = new Polygon();
             break;
           case ( 'M' ):
           case ( 'L' ):

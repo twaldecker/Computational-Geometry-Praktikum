@@ -8,5 +8,7 @@ int main( int argc, char *argv[] ) {
   PolygonTest * p = new PolygonTest( cli->getFilename() );
   p->parse();
 
+  p->printResults();
+
   return 0;
 }
