@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <string>
+#include "State.h"
 #include "Polygon.h"
 #include "Point2d.h"
 
@@ -19,7 +20,7 @@ private:
   ifstream file;
   string filename;
   clock_t start, stop; /* timestamps */
-  vector<Polygon *> polygons; /* a vector containing pointer to polygons */
+  vector<State *> states; /* a vector containing pointer to polygons */
   vector<Point2d *> points; /* a vector containing pointer to points2d */
 
   int open();

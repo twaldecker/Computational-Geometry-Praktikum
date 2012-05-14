@@ -11,21 +11,12 @@ class Polygon {
 
 private:
 
-  string id;
   vector<Point2d *> points;
 
 public:
 
   Polygon();
   virtual ~Polygon();
-
-  void setID( string id ) {
-    this->id = id;
-  }
-
-  string getID() const {
-    return id;
-  }
 
   vector<Point2d *> * getPoints() {
     return &points;

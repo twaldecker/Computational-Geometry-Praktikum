@@ -41,19 +41,23 @@ int PolygonTest::parse() {
   while( getline( file, strline ) ) {
     /* search for path */
     if( strline.find( "path" ) != string::npos ) {
-      Polygon * tmpin = new Polygon();
+      State * tmpstate = new State();
       /* get id */
       size_t pos1 = strline.find( "id" );
       if( pos1 != string::npos ) {
         size_t pos2 = strline.find( " ", pos1 + 1 );
         id = strline.substr( pos1 + 4, pos2 - ( pos1 + 4 ) - 1 );
-        tmpin->setID( id );
-        cout << "Polygon \"" << tmpin->getID() << "\" with ";
+        tmpstate->setID( id );
+        cout << "State \"" << tmpstate->getID() << "\" contains ";
       } /* else part to check further lines for id */
+      Polygon * tmppoly = new Polygon();
       while( getline( file, strline ) ) {
         if( strline.find( "/>" ) != string::npos ) {
-          polygons.push_back( tmpin );
-          cout << tmpin->getPoints()->size() << " points created" << endl;
+          tmpstate->addPolygon( tmppoly );
+          states.push_back( tmpstate );
+          cout << tmpstate->getPolygons()->size() << " polygon(s) and "
+              << tmpstate->getPolygons()->back()->getPoints()->size()
+              << " point(s)." << endl;
           break;
         }
         else {
@@ -70,13 +74,13 @@ int PolygonTest::parse() {
           case ( 'L' ):
             abs[0] = unk[0];
             abs[1] = unk[1];
-            tmpin->addPoint( abs[0], abs[1] );
+            tmppoly->addPoint( abs[0], abs[1] );
             break;
           case ( 'm' ):
           case ( 'l' ):
             abs[0] += unk[0];
             abs[1] += unk[1];
-            tmpin->addPoint( abs[0], abs[1] );
+            tmppoly->addPoint( abs[0], abs[1] );
             break;
           default:
             break;
