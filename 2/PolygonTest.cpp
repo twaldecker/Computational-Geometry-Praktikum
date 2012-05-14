@@ -28,6 +28,7 @@ void PolygonTest::calculatePiP() {
 }
 
 void PolygonTest::printResults() {
+  /* parsed states */
   for( vector<State *>::iterator stateit = states.begin();
       stateit != states.end(); stateit++ ) {
     cout << "State " << ( *stateit )->getID() << " contains "
@@ -38,8 +39,16 @@ void PolygonTest::printResults() {
         polyit != ( *stateit )->getPolygons()->end(); polyit++ ) {
       cout << ( *polyit )->getPoints()->size() << " ";
     }
-    cout << " point(s)." << endl;
+    cout << " point(s)" << endl;
   }
+  /* parsed cities */
+  for( vector<City *>::iterator cityit = cities.begin(); cityit != cities.end();
+      cityit++ ) {
+    cout << "City " << ( *cityit )->getID() << " at "
+        << ( *cityit )->getCoord()->getX() << ","
+        << ( *cityit )->getCoord()->getY() << endl;
+  }
+
 }
 
 int PolygonTest::parse() {
@@ -52,46 +61,73 @@ int PolygonTest::parse() {
   while( getline( file, strline ) ) {
     /* search for path */
     if( strline.find( "path" ) != string::npos ) {
-      State * tmpstate = new State();
-      /* get id */
-      size_t pos1 = strline.find( "id" );
+      size_t pos1 = strline.find( "id=" );
+      /* id is in same line -> process "state"-part first get the id */
       if( pos1 != string::npos ) {
         size_t pos2 = strline.find( " ", pos1 + 1 );
         id = strline.substr( pos1 + 4, pos2 - ( pos1 + 4 ) - 1 );
-        tmpstate->setID( id );
-      } /* else part to check further lines for id */
-
-      Polygon * tmppoly = new Polygon();
-      while( getline( file, strline ) ) {
-        if( strline.find( "/>" ) != string::npos ) {
-          states.push_back( tmpstate );
-          break;
+        State * tmpstate = new State( id );
+        /* parse the polygons */
+        Polygon * tmppoly = new Polygon();
+        while( getline( file, strline ) ) {
+          if( strline.find( "/>" ) != string::npos ) {
+            states.push_back( tmpstate );
+            break;
+          }
+          else {
+            string ctype = strline.substr( 0, 1 );
+            const char * type = ctype.c_str();
+            string cval = strline.substr( 1 );
+            const char * val = cval.c_str();
+            sscanf( val, "%f,%f", &unk[0], &unk[1] );
+            switch( *type ) {
+            /* z/Z is the delimiter for a new polygon */
+            case ( 'Z' ):
+            case ( 'z' ):
+              tmpstate->addPolygon( tmppoly );
+              tmppoly = new Polygon();
+              break;
+              /* M/L are absolute coordinates */
+            case ( 'M' ):
+            case ( 'L' ):
+              abs[0] = unk[0];
+              abs[1] = unk[1];
+              tmppoly->addPoint( abs[0], abs[1] );
+              break;
+              /* m/l are relative coordinates */
+            case ( 'm' ):
+            case ( 'l' ):
+              abs[0] += unk[0];
+              abs[1] += unk[1];
+              tmppoly->addPoint( abs[0], abs[1] );
+              break;
+            default:
+              break;
+            }
+          }
         }
-        else {
-          string ctype = strline.substr( 0, 1 );
-          const char * type = ctype.c_str();
-          string cval = strline.substr( 1 );
-          const char * val = cval.c_str();
-          sscanf( val, "%f,%f", &unk[0], &unk[1] );
-          switch( *type ) {
-          case ( 'Z' ):
-          case ( 'z' ):
-            tmpstate->addPolygon( tmppoly );
-            tmppoly = new Polygon();
-            break;
-          case ( 'M' ):
-          case ( 'L' ):
-            abs[0] = unk[0];
-            abs[1] = unk[1];
-            tmppoly->addPoint( abs[0], abs[1] );
-            break;
-          case ( 'm' ):
-          case ( 'l' ):
-            abs[0] += unk[0];
-            abs[1] += unk[1];
-            tmppoly->addPoint( abs[0], abs[1] );
-            break;
-          default:
+      }
+      /* id is not in the same line -> process "city"-part first get the id */
+      else {
+        while( getline( file, strline ) ) {
+          size_t pos1 = strline.find( "id=" );
+          if( pos1 != string::npos ) {
+            size_t pos2 = strline.find( "\"", pos1 + 4 );
+            id = strline.substr( pos1 + 4, pos2 - ( pos1 + 4 ) );
+            getline( file, strline );
+            pos1 = strline.find( "\"" );
+            pos2 = strline.find( "\"", pos1 + 1 );
+            string cval = strline.substr( pos1 + 1, pos2 - 1 );
+            const char * val = cval.c_str();
+            sscanf( val, "%f", &abs[0] );
+            getline( file, strline );
+            pos1 = strline.find( "\"" );
+            pos2 = strline.find( "\"", pos1 + 1 );
+            cval = strline.substr( pos1 + 1, pos2 - 1 );
+            val = cval.c_str();
+            sscanf( val, "%f", &abs[1] );
+            City * tmpcity = new City( id, abs[0], abs[1] );
+            cities.push_back( tmpcity );
             break;
           }
         }

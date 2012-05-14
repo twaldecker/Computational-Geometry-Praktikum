@@ -1,7 +1,10 @@
 #ifndef STATE_H_
 #define STATE_H_
 
+#include <string>
 #include "Polygon.h"
+
+using namespace std;
 
 class State {
 
@@ -12,12 +15,8 @@ private:
 
 public:
 
-  State();
+  State( string id );
   virtual ~State();
-
-  void setID( const string id ) {
-    this->id = id;
-  }
 
   string getID() const {
     return id;

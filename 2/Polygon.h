@@ -1,7 +1,6 @@
 #ifndef POLYGON_H_
 #define POLYGON_H_
 
-#include <string>
 #include <vector>
 #include "Point2d.h"
 

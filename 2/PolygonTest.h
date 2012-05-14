@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <string>
 #include "State.h"
+#include "City.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ private:
   string filename;
   clock_t start, stop; /* timestamps */
   vector<State *> states; /* a vector containing pointer to States */
+  vector<City *> cities; /* a vecotr containing pointer to Cities */
 
   int open();
 

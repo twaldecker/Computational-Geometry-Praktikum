@@ -26,14 +26,13 @@ Cli::Cli( int argc, char* argv[] ) {
 }
 
 void Cli::help() {
-  cout
-    << "polygon - a program to calculate the areas of polygons." << endl
-    << " Usage:" << endl
-    << "  polygon [-h] filename" << endl
-    << "  -h displays this help message" << endl << endl
-    << " Input file has to be a SVG with path type polygons." << endl
-    << " Output:" << endl
-    << "  The statistics are printed on stderr, the intersected lines on stdout."<< endl;
+  cout << "polygon - a program to calculate the areas of polygons." << endl
+      << " Usage:" << endl << "  polygon [-h] filename" << endl
+      << "  -h displays this help message" << endl << endl
+      << " Input file has to be a SVG with path type polygons." << endl
+      << " Output:" << endl
+      << "  The statistics are printed on stderr, the intersected lines on stdout."
+      << endl;
 }
 
 Cli::~Cli() {
