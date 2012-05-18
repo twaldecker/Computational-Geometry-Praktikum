@@ -29,7 +29,7 @@ public:
   /**
    * calculate area of polygon
    */
-  float area() const;
+  float area();
 
   /**
    * calculate area of polygon

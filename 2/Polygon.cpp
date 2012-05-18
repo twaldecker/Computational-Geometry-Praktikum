@@ -13,8 +13,20 @@ void Polygon::addPoint( const float x, const float y ) {
   points.push_back( p );
 }
 
-float Polygon::area() const {
-  return 0;
+/**
+ * This method implements the calculation of the area of the polygon
+ * */
+float Polygon::area() {
+  float area = 0;
+
+  //Gaußsche Dreiecksformel
+  //iterate over points
+  for( vector<Point2d *>::iterator it = points.begin()+1;
+      it != points.end(); it++ ) {
+    area += (*it)->getY() * ( (*(it-1))->getX() - (*(it+1 == points.end() ? points.begin(): it+1))->getX() );
+  }
+  area = area / 2;
+  return area;
 }
 
 bool Polygon::pip() const {
