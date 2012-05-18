@@ -2,6 +2,8 @@
 #define STATE_H_
 
 #include <string>
+#include <vector>
+#include <iostream>
 #include "Polygon.h"
 
 using namespace std;
@@ -25,6 +27,10 @@ public:
   vector<Polygon *> * getPolygons() {
     return &polygons;
   }
+
+  float area();
+
+  bool pip() const;
 
   /**
    * add polygon to state

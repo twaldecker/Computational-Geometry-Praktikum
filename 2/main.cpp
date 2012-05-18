@@ -10,5 +10,7 @@ int main( int argc, char *argv[] ) {
 
   p->printResults();
 
+  p->calculateAreas();
+
   return 0;
 }

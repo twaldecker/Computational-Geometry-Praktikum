@@ -20,7 +20,10 @@ int PolygonTest::open() {
 }
 
 void PolygonTest::calculateAreas() {
-
+  for( vector<State *>::iterator stateit = states.begin();
+      stateit != states.end(); stateit++ ) {
+    (*stateit)->area();
+  }
 }
 
 void PolygonTest::calculatePiP() {
