@@ -99,12 +99,13 @@ int PolygonTest::parse() {
               break;
               /* m/l are relative coordinates */
             case ( 'm' ):
-            case ( 'l' ):
+            case ( 'l' ): /* abs contains the last coordinates, unk contains relative coordinates */
               abs[0] += unk[0];
               abs[1] += unk[1];
               tmppoly->addPoint( abs[0], abs[1] );
               break;
             default:
+              cerr << "Parser Error: not implemented: " << *type << endl;
               break;
             }
           }

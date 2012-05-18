@@ -21,11 +21,12 @@ float Polygon::area() {
 
   //Gaußsche Dreiecksformel
   //iterate over points
-  for( vector<Point2d *>::iterator it = points.begin()+1;
+  for( vector<Point2d *>::iterator it = points.begin();
       it != points.end(); it++ ) {
-    area += (*it)->getY() * ( (*(it-1))->getX() - (*(it+1 == points.end() ? points.begin(): it+1))->getX() );
+    area += (*it)->getY() * ( (*(it == points.begin()? points.end()-1 : it-1))->getX() - (*(it+1 == points.end() ? points.begin(): it+1))->getX() );
   }
-  area = area / 2;
+  area = abs(area/2);
+
   return area;
 }
 
