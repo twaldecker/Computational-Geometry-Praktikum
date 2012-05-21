@@ -16,12 +16,12 @@ void Polygon::addPoint( const float x, const float y ) {
 /**
  * This method implements the calculation of the area of the polygon
  * */
-float Polygon::area() {
+float Polygon::area() const {
   float area = 0;
 
   //Gaußsche Dreiecksformel
   //iterate over points
-  for( vector<Point2d *>::iterator it = points.begin(); it != points.end();
+  for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
       it++ ) {
     /*to implement the module I used the (if)?then:else construct. Ugly but works. */
     area +=
@@ -40,12 +40,12 @@ bool Polygon::pip() const {
   return true;
 }
 
-Point2d * Polygon::max() {
+Point2d * Polygon::max() const {
   //initialize with 0,0
   float maxX = 0, maxY = 0;
 
   //run through all points and find the max coordinates.
-  for( vector<Point2d *>::iterator it = points.begin(); it != points.end();
+  for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
       it++ ) {
 
     if( maxX < ( *it )->getX() )
@@ -60,12 +60,12 @@ Point2d * Polygon::max() {
   return max;
 }
 
-Point2d * Polygon::min() {
+Point2d * Polygon::min() const {
   //initialize with 0,0
     float minX = 0, minY = 0;
 
     //run through all points and find the max coordinates.
-    for( vector<Point2d *>::iterator it = points.begin(); it != points.end();
+    for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
         it++ ) {
 
       if( minX > ( *it )->getX() )

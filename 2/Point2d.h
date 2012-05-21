@@ -44,6 +44,10 @@ public:
     return Point2d( this->getX() - q.getX(), this->getY() - q.getY() );
   }
 
+  Point2d operator+( const Point2d& q) {
+    return Point2d( this->getX() + q.getX(), this->getY() + q.getY() );
+  }
+
   Point2d operator/( const Point2d& q ) {
     return Point2d( this->getX() / q.getX(), this->getY() / q.getY() );
   }

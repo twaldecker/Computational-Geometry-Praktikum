@@ -29,7 +29,7 @@ public:
   /**
    * calculate area of polygon
    */
-  float area();
+  float area() const;
 
   /**
    * calculate area of polygon
@@ -40,13 +40,13 @@ public:
    * Returns a Point2d containing the maximum of the
    * first coordinate and the max of the second coordinates
    */
-  Point2d * max();
+  Point2d * max() const;
 
   /**
    * Returns a Point2d containing the miniumum of the
    * first coordinate and the minimum of the second coordinates.
    */
-  Point2d * min();
+  Point2d * min() const;
 };
 
 #endif /* POLYGON_H_ */

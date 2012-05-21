@@ -10,9 +10,9 @@ State::~State() {
   // TODO Auto-generated destructor stub
 }
 
-float State::area() {
+float State::area() const {
   float area = 0;
-  for( vector<Polygon *>::iterator polyit = polygons.begin();
+  for( vector<Polygon *>::const_iterator polyit = polygons.begin();
       polyit != this->polygons.end(); polyit++ ) {
 
     area += ( *polyit )->area();
@@ -22,7 +22,7 @@ float State::area() {
 }
 
 bool State::pip() const {
-  for( vector<Polygon *>::iterator polyit = polygons.begin();
+  for( vector<Polygon *>::const_iterator polyit = polygons.begin();
       polyit != this->polygons.end(); polyit++ ) {
 
     if( ( *polyit )->pip() ) /* return true if point is in one polygon */

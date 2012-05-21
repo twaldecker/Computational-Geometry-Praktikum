@@ -28,7 +28,7 @@ public:
     return &polygons;
   }
 
-  float area();
+  float area() const;
 
   bool pip() const;
 
