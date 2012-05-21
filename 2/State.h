@@ -31,12 +31,17 @@ public:
 
   float area() const;
 
-  bool cityInside(City *) const;
+  bool cityInside( City * ) const;
 
   /**
    * add polygon to state
    */
   void addPolygon( Polygon * const poly );
+
+  friend ostream& operator<<( ostream& out, const State& s ) {
+    out << s.getID();
+    return out;
+  }
 
 };
 

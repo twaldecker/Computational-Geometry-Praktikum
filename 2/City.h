@@ -2,6 +2,7 @@
 #define CITY_H_
 
 #include <string>
+#include <iostream>
 #include "Point2d.h"
 
 using namespace std;
@@ -24,6 +25,11 @@ public:
 
   Point2d * getCoord() {
     return &coord;
+  }
+
+  friend ostream& operator<<( ostream& out, const City& c ) {
+    out << c.getID();
+    return out;
   }
 
 };

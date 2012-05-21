@@ -31,7 +31,8 @@ void PolygonTest::calculatePiP() const {
       cityit != cities.end(); cityit++ ) {
     for( vector<State *>::const_iterator stateit = states.begin();
           stateit != states.end(); stateit++ ) {
-        (*stateit)->cityInside(*cityit);
+        if((*stateit)->cityInside(*cityit))
+          cout << *cityit << " ist in "<< *stateit << endl;
 
       }
 
