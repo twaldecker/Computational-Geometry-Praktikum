@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "Polygon.h"
+#include "City.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ public:
 
   float area() const;
 
-  bool pip() const;
+  bool cityInside(City *) const;
 
   /**
    * add polygon to state

@@ -19,20 +19,30 @@ int PolygonTest::open() {
   return 0;
 }
 
-void PolygonTest::calculateAreas() {
-  for( vector<State *>::iterator stateit = states.begin();
+void PolygonTest::calculateAreas() const {
+  for( vector<State *>::const_iterator stateit = states.begin();
       stateit != states.end(); stateit++ ) {
     (*stateit)->area();
   }
 }
 
-void PolygonTest::calculatePiP() {
+void PolygonTest::calculatePiP() const {
+  for( vector<City *>::const_iterator cityit = cities.begin();
+      cityit != cities.end(); cityit++ ) {
+    for( vector<State *>::const_iterator stateit = states.begin();
+          stateit != states.end(); stateit++ ) {
+        (*stateit)->cityInside(*cityit);
 
+      }
+
+
+
+  }
 }
 
-void PolygonTest::printResults() {
+void PolygonTest::printResults() const {
   /* parsed states */
-  for( vector<State *>::iterator stateit = states.begin();
+  for( vector<State *>::const_iterator stateit = states.begin();
       stateit != states.end(); stateit++ ) {
     cout << "State " << ( *stateit )->getID() << " contains "
         << ( *stateit )->getPolygons()->size() << " polygon(s) and ";
@@ -45,7 +55,7 @@ void PolygonTest::printResults() {
     cout << " point(s)" << endl;
   }
   /* parsed cities */
-  for( vector<City *>::iterator cityit = cities.begin(); cityit != cities.end();
+  for( vector<City *>::const_iterator cityit = cities.begin(); cityit != cities.end();
       cityit++ ) {
     cout << "City " << ( *cityit )->getID() << " at "
         << ( *cityit )->getCoord()->getX() << ","

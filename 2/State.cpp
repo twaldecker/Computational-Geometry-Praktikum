@@ -21,7 +21,7 @@ float State::area() const {
   return area;
 }
 
-bool State::pip() const {
+bool State::cityInside(City * c) const {
   for( vector<Polygon *>::const_iterator polyit = polygons.begin();
       polyit != this->polygons.end(); polyit++ ) {
 

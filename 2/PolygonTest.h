@@ -29,9 +29,9 @@ public:
   PolygonTest( string );
   virtual ~PolygonTest();
 
-  void calculateAreas();
-  void calculatePiP();
-  void printResults();
+  void calculateAreas() const;
+  void calculatePiP() const;
+  void printResults() const;
   int parse();
 
 };

@@ -2,6 +2,9 @@
 #define POINT2D_H_
 
 #include <cmath>
+#include<iostream>
+
+using namespace std;
 
 class Point2d {
 private:
@@ -54,6 +57,12 @@ public:
 
   bool operator==( const Point2d& q ) {
     return ( ( this->getX() == q.getX() ) && ( this->getY() == q.getY() ) );
+  }
+
+  friend ostream& operator<<(ostream& out, const Point2d& p)
+  {
+      out << "(" << p.getX() << ", " << p.getY() << ")";
+      return out;
   }
 
 };
