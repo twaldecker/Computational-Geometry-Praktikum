@@ -35,6 +35,18 @@ public:
    * calculate area of polygon
    */
   bool pip() const;
+
+  /**
+   * Returns a Point2d containing the maximum of the
+   * first coordinate and the max of the second coordinates
+   */
+  Point2d * max();
+
+  /**
+   * Returns a Point2d containing the miniumum of the
+   * first coordinate and the minimum of the second coordinates.
+   */
+  Point2d * min();
 };
 
 #endif /* POLYGON_H_ */

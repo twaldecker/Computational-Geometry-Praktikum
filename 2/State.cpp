@@ -13,16 +13,22 @@ State::~State() {
 float State::area() {
   float area = 0;
   for( vector<Polygon *>::iterator polyit = polygons.begin();
-          polyit != this->polygons.end(); polyit++ ) {
+      polyit != this->polygons.end(); polyit++ ) {
 
-        area += ( *polyit )->area();
+    area += ( *polyit )->area();
   }
   cout << "Staat: " << id << " Area: " << area << endl;
   return area;
 }
 
 bool State::pip() const {
-  return true;
+  for( vector<Polygon *>::iterator polyit = polygons.begin();
+      polyit != this->polygons.end(); polyit++ ) {
+
+    if( ( *polyit )->pip() ) /* return true if point is in one polygon */
+      return true;
+  }
+  return false; /*point is in no polygon of the state*/
 }
 
 void State::addPolygon( Polygon * const poly ) {
