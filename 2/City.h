@@ -28,7 +28,7 @@ public:
   }
 
   friend ostream& operator<<( ostream& out, const City& c ) {
-    out << c.getID();
+    out << (c.getID());
     return out;
   }
 
