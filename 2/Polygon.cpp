@@ -21,8 +21,8 @@ float Polygon::area() const {
 
   //Gaußsche Dreiecksformel
   //iterate over points
-  for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
-      it++ ) {
+  for( vector<Point2d *>::const_iterator it = points.begin();
+      it != points.end(); it++ ) {
     /*to implement the module I used the (if)?then:else construct. Ugly but works. */
     area +=
         ( *it )->getY()
@@ -34,55 +34,74 @@ float Polygon::area() const {
   return area;
 }
 
-bool Polygon::pip() const {
+bool Polygon::pip( Point2d& q ) const {
   //bestimme einen Punkt der Außerhalb des Polygons liegt.
   //Nehme die maximalen werte in x- und y- richtung und addiere (1,1)
-  Point2d * add = new Point2d(1,1);
-  Point2d a = Polygon::max() + Point2d(1,1);
-  cout << a;
+  Point2d a = Polygon::max() + Point2d( 1, 1 ); //p~ ausm skript
 
+  //suche einen eckpunkt der nicht auf p-q~ liegt.
+  vector<Point2d *>::const_iterator pit = points.begin();
+  while( a.ccw( q, **pit ) == 0 ) {
+    if( ++pit == points.end() ) {
+      cerr << "Komisches polygon." << endl;
+      //exit(34);
+    }
+  }
+  //pit enthält nun pointer auf ecke.
 
+  int s = 0; //s enthält die anzahl der Schnitte.
+  float lr = copysign( a.ccw( q, **pit ), 1.0 ); //erstes Vorzeichen von ccw
 
-  return true;
+  for( vector<Point2d *>::const_iterator jit = pit + 1; jit != points.end();
+      jit++ ) {
+    float lrnew = copysign( a.ccw( q, **jit ), 1.0 );
+    if( abs( lrnew - lr ) == 2 ) {
+      lr = lrnew;
+      if( ( ( *( jit - 1 ) )->ccw( **jit, **pit )
+          * ( *( jit - 1 ) )->ccw( **jit, q ) ) <= 0 )
+        s++;
+    }
+  }
+  return !(s%2 == 0);
 }
 
 Point2d& Polygon::max() const {
-  //initialize with 0,0
-  float maxX = 0, maxY = 0;
+ //initialize with 0,0
+float maxX = 0, maxY = 0;
 
-  //run through all points and find the max coordinates.
-  for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
-      it++ ) {
+ //run through all points and find the max coordinates.
+for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
+  it++ ) {
 
-    if( maxX < ( *it )->getX() )
-      maxX = ( *it )->getX();
+if( maxX < ( *it )->getX() )
+  maxX = ( *it )->getX();
 
-    if( maxY < ( *it )->getY() )
-      maxY = ( *it )->getY();
-  }
+if( maxY < ( *it )->getY() )
+  maxY = ( *it )->getY();
+}
 
-  Point2d * max = new Point2d( maxX, maxY );
+Point2d * max = new Point2d( maxX, maxY );
 
-  return *max;
+return *max;
 }
 
 Point2d& Polygon::min() const {
-  //initialize with 0,0
-    float minX = 0, minY = 0;
+ //initialize with 0,0
+float minX = 0, minY = 0;
 
-    //run through all points and find the max coordinates.
-    for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
-        it++ ) {
+ //run through all points and find the max coordinates.
+for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
+  it++ ) {
 
-      if( minX > ( *it )->getX() )
-        minX = ( *it )->getX();
+if( minX > ( *it )->getX() )
+  minX = ( *it )->getX();
 
-      if( minY > ( *it )->getY() )
-        minY = ( *it )->getY();
-    }
+if( minY > ( *it )->getY() )
+  minY = ( *it )->getY();
+}
 
-    Point2d * min = new Point2d( minX, minY );
+Point2d * min = new Point2d( minX, minY );
 
-    return *min;
+return *min;
 }
 

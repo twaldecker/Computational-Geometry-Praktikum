@@ -23,8 +23,8 @@ public:
     return id;
   }
 
-  Point2d * getCoord() {
-    return &coord;
+  Point2d& getCoord() {
+    return coord;
   }
 
   friend ostream& operator<<( ostream& out, const City& c ) {

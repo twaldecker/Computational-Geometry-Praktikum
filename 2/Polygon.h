@@ -2,6 +2,7 @@
 #define POLYGON_H_
 
 #include <vector>
+#include <cmath>
 #include "Point2d.h"
 
 using namespace std;
@@ -34,7 +35,7 @@ public:
   /**
    * calculate area of polygon
    */
-  bool pip() const;
+  bool pip(Point2d &) const;
 
   /**
    * Returns a Point2d containing the maximum of the

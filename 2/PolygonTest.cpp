@@ -59,9 +59,8 @@ void PolygonTest::printResults() const {
   /* parsed cities */
   for( vector<City *>::const_iterator cityit = cities.begin();
       cityit != cities.end(); cityit++ ) {
-    cout << "City " << **cityit << " at " << *(*cityit)->getCoord() << endl;
+    cout << "City " << **cityit << " at " << (*cityit)->getCoord() << endl;
   }
-
 }
 
 int PolygonTest::parse() {

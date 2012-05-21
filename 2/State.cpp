@@ -25,7 +25,7 @@ bool State::cityInside(City * c) const {
   for( vector<Polygon *>::const_iterator polyit = polygons.begin();
       polyit != polygons.end(); polyit++ ) {
 
-    if( ( *polyit )->pip() ) /* return true if point is in one polygon */
+    if( ( *polyit )->pip(c->getCoord()) ) /* return true if point is in one polygon */
       return true;
   }
   return false; /*point is in no polygon of the state*/
