@@ -22,7 +22,7 @@ int PolygonTest::open() {
 void PolygonTest::calculateAreas() const {
   for( vector<State *>::const_iterator stateit = states.begin();
       stateit != states.end(); stateit++ ) {
-    ( *stateit )->area();
+    (*stateit)->area();
   }
 }
 
@@ -35,7 +35,7 @@ void PolygonTest::calculatePiP() const {
         stateit != states.end(); stateit++ ) {
 
       if( ( *stateit )->cityInside( *cityit ) ) {
-        cout << *cityit << " ist in " << *stateit << endl;
+        cout << **cityit << " ist in " << **stateit << endl;
       }
 
     }

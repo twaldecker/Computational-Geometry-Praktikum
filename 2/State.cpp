@@ -13,7 +13,7 @@ State::~State() {
 float State::area() const {
   float area = 0;
   for( vector<Polygon *>::const_iterator polyit = polygons.begin();
-      polyit != this->polygons.end(); polyit++ ) {
+      polyit != polygons.end(); polyit++ ) {
 
     area += ( *polyit )->area();
   }
@@ -23,7 +23,7 @@ float State::area() const {
 
 bool State::cityInside(City * c) const {
   for( vector<Polygon *>::const_iterator polyit = polygons.begin();
-      polyit != this->polygons.end(); polyit++ ) {
+      polyit != polygons.end(); polyit++ ) {
 
     if( ( *polyit )->pip() ) /* return true if point is in one polygon */
       return true;

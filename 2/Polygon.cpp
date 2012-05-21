@@ -37,15 +37,14 @@ float Polygon::area() const {
 bool Polygon::pip() const {
   //bestimme einen Punkt der Außerhalb des Polygons liegt.
   Point2d * add = new Point2d(1,1);
-  Point2d * a;
-  *a = *(Polygon::max()) + *add;
+  Point2d a = Polygon::max() + *add;
   cout << a;
 
 
   return true;
 }
 
-Point2d * Polygon::max() const {
+Point2d& Polygon::max() const {
   //initialize with 0,0
   float maxX = 0, maxY = 0;
 
@@ -62,10 +61,10 @@ Point2d * Polygon::max() const {
 
   Point2d * max = new Point2d( maxX, maxY );
 
-  return max;
+  return *max;
 }
 
-Point2d * Polygon::min() const {
+Point2d& Polygon::min() const {
   //initialize with 0,0
     float minX = 0, minY = 0;
 
@@ -82,6 +81,6 @@ Point2d * Polygon::min() const {
 
     Point2d * min = new Point2d( minX, minY );
 
-    return min;
+    return *min;
 }
 
