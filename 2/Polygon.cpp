@@ -36,9 +36,11 @@ float Polygon::area() const {
 
 bool Polygon::pip() const {
   //bestimme einen Punkt der Außerhalb des Polygons liegt.
+  //Nehme die maximalen werte in x- und y- richtung und addiere (1,1)
   Point2d * add = new Point2d(1,1);
-  Point2d a = Polygon::max() + *add;
+  Point2d a = Polygon::max() + Point2d(1,1);
   cout << a;
+
 
 
   return true;
