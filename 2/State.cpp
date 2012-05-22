@@ -17,7 +17,8 @@ float State::area() const {
 
     area += ( *polyit )->area();
   }
-  cout << "Staat: " << id << " Area: " << area << endl;
+  /* area multiplicated with a scale-factor */
+  cout << "Staat: " << id << " Area: " << area * 1.17531998474 << endl;
   return area;
 }
 
