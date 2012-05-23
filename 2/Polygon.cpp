@@ -37,7 +37,7 @@ float Polygon::area() const {
 bool Polygon::pip( Point2d& q ) const {
   //bestimme einen Punkt der Außerhalb des Polygons liegt.
   //Nehme die maximalen werte in x- und y- richtung und addiere (1,1)
-  Point2d a = Polygon::max() + Point2d( 1, 1 ); //p~ ausm skript
+  Point2d a = this->max() + Point2d( 10, 10 ); //p~ ausm skript
 
   //suche einen eckpunkt der nicht auf p-q~ liegt.
   vector<Point2d *>::const_iterator pit = points.begin();
@@ -50,11 +50,15 @@ bool Polygon::pip( Point2d& q ) const {
   //pit enthält nun pointer auf ecke.
 
   int s = 0; //s enthält die anzahl der Schnitte.
-  float lr = copysign( 1.0, a.ccw( q, **pit ) ); //erstes Vorzeichen von ccw
+  float x = a.ccw( q, **pit ); //ccw-wert
+  float lr = (x > 0) - (x < 0);
+  //float lr = copysign( 1.0, a.ccw( q, **pit ) ); //erstes Vorzeichen von ccw
 
   for( vector<Point2d *>::const_iterator jit = pit + 1; jit != points.end();
       jit++ ) {
-    float lrnew = copysign( 1.0, a.ccw( q, **jit ) );
+    x = a.ccw( q, **jit );
+    float lrnew = (x > 0) - (x < 0);
+    //float lrnew = copysign( 1.0, a.ccw( q, **jit ) );
     if( abs( lrnew - lr ) == 2 ) {
       lr = lrnew;
       if( ( ( *( jit - 1 ) )->ccw( **jit, **pit )
@@ -62,7 +66,15 @@ bool Polygon::pip( Point2d& q ) const {
         s++;
     }
   }
-  return !( s % 2 == 0 );
+  //long expression:
+  if((s % 2) == 0) {
+    return false;
+  } else {
+    return true;
+  }
+
+  //short
+  //return !( s % 2 == 0 );
 }
 
 Point2d& Polygon::max() const {
