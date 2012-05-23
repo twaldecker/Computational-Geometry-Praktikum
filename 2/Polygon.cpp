@@ -62,46 +62,46 @@ bool Polygon::pip( Point2d& q ) const {
         s++;
     }
   }
-  return !(s%2 == 0);
+  return !( s % 2 == 0 );
 }
 
 Point2d& Polygon::max() const {
- //initialize with 0,0
-float maxX = 0, maxY = 0;
+  //initialize with 0,0
+  float maxX = 0, maxY = 0;
 
- //run through all points and find the max coordinates.
-for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
-  it++ ) {
+  //run through all points and find the max coordinates.
+  for( vector<Point2d *>::const_iterator it = points.begin();
+      it != points.end(); it++ ) {
 
-if( maxX < ( *it )->getX() )
-  maxX = ( *it )->getX();
+    if( maxX < ( *it )->getX() )
+      maxX = ( *it )->getX();
 
-if( maxY < ( *it )->getY() )
-  maxY = ( *it )->getY();
-}
+    if( maxY < ( *it )->getY() )
+      maxY = ( *it )->getY();
+  }
 
-Point2d * max = new Point2d( maxX, maxY );
+  Point2d * max = new Point2d( maxX, maxY );
 
-return *max;
+  return *max;
 }
 
 Point2d& Polygon::min() const {
- //initialize with 0,0
-float minX = 0, minY = 0;
+  //initialize with 0,0
+  float minX = 0, minY = 0;
 
- //run through all points and find the max coordinates.
-for( vector<Point2d *>::const_iterator it = points.begin(); it != points.end();
-  it++ ) {
+  //run through all points and find the max coordinates.
+  for( vector<Point2d *>::const_iterator it = points.begin();
+      it != points.end(); it++ ) {
 
-if( minX > ( *it )->getX() )
-  minX = ( *it )->getX();
+    if( minX > ( *it )->getX() )
+      minX = ( *it )->getX();
 
-if( minY > ( *it )->getY() )
-  minY = ( *it )->getY();
-}
+    if( minY > ( *it )->getY() )
+      minY = ( *it )->getY();
+  }
 
-Point2d * min = new Point2d( minX, minY );
+  Point2d * min = new Point2d( minX, minY );
 
-return *min;
+  return *min;
 }
 
