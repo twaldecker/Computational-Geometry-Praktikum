@@ -50,11 +50,11 @@ bool Polygon::pip( Point2d& q ) const {
   //pit enthält nun pointer auf ecke.
 
   int s = 0; //s enthält die anzahl der Schnitte.
-  float lr = copysign( a.ccw( q, **pit ), 1.0 ); //erstes Vorzeichen von ccw
+  float lr = copysign( 1.0, a.ccw( q, **pit ) ); //erstes Vorzeichen von ccw
 
   for( vector<Point2d *>::const_iterator jit = pit + 1; jit != points.end();
       jit++ ) {
-    float lrnew = copysign( a.ccw( q, **jit ), 1.0 );
+    float lrnew = copysign( 1.0, a.ccw( q, **jit ) );
     if( abs( lrnew - lr ) == 2 ) {
       lr = lrnew;
       if( ( ( *( jit - 1 ) )->ccw( **jit, **pit )
