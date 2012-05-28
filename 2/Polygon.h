@@ -44,8 +44,11 @@ public:
 
   /**
    * calculate area of polygon
+   * returns 0 if point is not in polygon,
+   * returns 1 if point is in polygon and type is not inner
+   * returns -1 if point is in polygon and type is inner
    */
-  bool pip(Point2d &) const;
+  int pip(Point2d &) const;
 
   /**
    * Returns a Point2d containing the maximum of the

@@ -31,7 +31,7 @@ public:
 
   float area() const;
 
-  bool cityInside( City * ) const;
+  int cityInside( City * ) const;
 
   /**
    * add polygon to state

@@ -38,7 +38,7 @@ float Polygon::area() const {
   return area;
 }
 
-bool Polygon::pip( Point2d& q ) const {
+int Polygon::pip( Point2d& q ) const {
   //bestimme einen Punkt der Außerhalb des Polygons liegt.
   //Nehme die maximalen werte in x- und y- richtung und addiere (1,1)
   Point2d a = this->max() + Point2d( 10, 10 ); //p~ ausm skript
@@ -72,9 +72,12 @@ bool Polygon::pip( Point2d& q ) const {
   }
   //long expression:
   if((s % 2) == 0) {
-    return false;
+    return 0;
   } else {
-    return true;
+    if(isInner())
+      return -1;
+    else
+      return 1;
   }
 
   //short

@@ -22,14 +22,16 @@ float State::area() const {
   return area;
 }
 
-bool State::cityInside(City * c) const {
+int State::cityInside(City * c) const {
+  int count = 0;
   for( vector<Polygon *>::const_iterator polyit = polygons.begin();
       polyit != polygons.end(); polyit++ ) {
 
-    if( ( *polyit )->pip(c->getCoord()) ) /* return true if point is in one polygon */
-      return true;
+    count += ( *polyit )->pip(c->getCoord()); //need to check all polygons of state. see Polygon::pip for more info.
   }
-  return false; /*point is in no polygon of the state*/
+
+
+  return count; /*point is in no polygon of the state*/
 }
 
 void State::addPolygon( Polygon * const poly ) {
