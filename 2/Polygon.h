@@ -12,6 +12,7 @@ class Polygon {
 private:
 
   vector<Point2d *> points;
+  bool inner; /*if set, polygon is inner polygon*/
 
 public:
 
@@ -21,6 +22,15 @@ public:
   vector<Point2d *> * getPoints() {
     return &points;
   }
+
+  void setInner() {
+    this->inner = 1;
+  }
+
+  bool isInner() const {
+    return inner;
+  }
+
 
   /**
    * add point to polygon

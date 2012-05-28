@@ -125,6 +125,7 @@ int PolygonTest::parse() {
               if(i){
                 Point2d * h = new Point2d(abs[0], abs[1]);
                 if(bigpoly->pip(*h)){
+                  tmppoly->setInner();
                   cout << id << " inner! Punkt:" << *h << endl;
                   i = 0;
                 }

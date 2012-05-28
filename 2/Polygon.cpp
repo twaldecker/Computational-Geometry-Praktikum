@@ -1,6 +1,6 @@
 #include "Polygon.h"
 
-Polygon::Polygon() {
+Polygon::Polygon():inner(0) {
   // TODO Auto-generated constructor stub
 }
 
@@ -30,6 +30,10 @@ float Polygon::area() const {
                 - ( *( it + 1 == points.end() ? points.begin() : it + 1 ) )->getX() );
   }
   area = abs( area / 2 );
+
+  if(this->isInner()){
+    area *= -1;
+  }
 
   return area;
 }
