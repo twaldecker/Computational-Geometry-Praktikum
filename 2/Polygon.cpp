@@ -61,7 +61,7 @@ bool Polygon::pip( Point2d& q ) const {
     //float lrnew = copysign( 1.0, a.ccw( q, **jit ) );
     if( abs( lrnew - lr ) == 2 ) {
       lr = lrnew;
-      if( ( ( *( jit - 1 ) )->ccw( **jit, **pit )
+      if( ( ( *( jit - 1 ) )->ccw( **jit, a )
           * ( *( jit - 1 ) )->ccw( **jit, q ) ) <= 0 )
         s++;
     }
@@ -98,8 +98,9 @@ Point2d& Polygon::max() const {
 }
 
 Point2d& Polygon::min() const {
-  //initialize with 0,0
-  float minX = 0, minY = 0;
+  //initialize with max values!
+  Point2d h = this->max();
+  float minX = h.getX(), minY = h.getY();
 
   //run through all points and find the max coordinates.
   for( vector<Point2d *>::const_iterator it = points.begin();
@@ -116,4 +117,3 @@ Point2d& Polygon::min() const {
 
   return *min;
 }
-

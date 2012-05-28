@@ -74,13 +74,27 @@ int PolygonTest::parse() {
     /* search for path */
     if( strline.find( "path" ) != string::npos ) {
       size_t pos1 = strline.find( "id=" );
-      /* id is in same line -> process "state"-part first get the id */
+      /*
+       * The processing is split in two parts. The type of processing is determined with this if.
+       * */
       if( pos1 != string::npos ) {
+        /*
+         * we found a id= in the same line. process the state.
+         */
+
+        /*
+         * Get the id of the state and create a new object.
+         */
         size_t pos2 = strline.find( " ", pos1 + 1 );
         id = strline.substr( pos1 + 4, pos2 - ( pos1 + 4 ) - 1 );
         State * tmpstate = new State( id );
-        /* parse the polygons */
+
+        /*
+         * Now start with the polygons.
+         */
+        int i = 0;
         Polygon * tmppoly = new Polygon();
+        Polygon * bigpoly;
         while( getline( file, strline ) ) {
           if( strline.find( "/>" ) != string::npos ) {
             states.push_back( tmpstate );
@@ -97,13 +111,24 @@ int PolygonTest::parse() {
             case ( 'Z' ):
             case ( 'z' ):
               tmpstate->addPolygon( tmppoly );
+              if(!i) { // if i is null store the first (biggest) polygon to bigpoly pointer.
+                bigpoly = tmppoly;
+              }
               tmppoly = new Polygon();
+              i = 1;
               break;
               /* M/L are absolute coordinates */
             case ( 'M' ):
             case ( 'L' ):
               abs[0] = unk[0];
               abs[1] = unk[1];
+              if(i){
+                Point2d * h = new Point2d(abs[0], abs[1]);
+                if(bigpoly->pip(*h)){
+                  cout << id << " inner! Punkt:" << *h << endl;
+                  i = 0;
+                }
+              }
               tmppoly->addPoint( abs[0], abs[1] );
               break;
               /* m/l are relative coordinates */
@@ -120,8 +145,10 @@ int PolygonTest::parse() {
           }
         }
       }
-      /* id is not in the same line -> process "city"-part first get the id */
-      else {
+      else { /*----------------------------------------------------------------------*/
+        /*
+         * process a city.
+         */
         while( getline( file, strline ) ) {
           size_t pos1 = strline.find( "id=" );
           if( pos1 != string::npos ) {
@@ -141,7 +168,7 @@ int PolygonTest::parse() {
             sscanf( val, "%f", &abs[1] );
             City * tmpcity = new City( id, abs[0], abs[1] );
             cities.push_back( tmpcity );
-            break;
+            break; //FIXME: what to break here?
           }
         }
       }
