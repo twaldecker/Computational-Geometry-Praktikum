@@ -70,18 +70,15 @@ int Polygon::pip( Point2d& q ) const {
         s++;
     }
   }
-  //long expression:
+  //calculate return value:
   if((s % 2) == 0) {
-    return 0;
+    return 0; //point is not in polygon
   } else {
     if(isInner())
-      return -1;
+      return -1; //point is in polygon & type is inner
     else
-      return 1;
+      return 1; //point is in polygon & type is not inner.
   }
-
-  //short
-  //return !( s % 2 == 0 );
 }
 
 Point2d& Polygon::max() const {

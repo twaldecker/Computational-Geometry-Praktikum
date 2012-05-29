@@ -1,0 +1,25 @@
+*******************************************************************
+* Erläuterungen zum 2. Praktikum Computational Geometry SoSe 2012 *
+* Thomas Waldecker und Stefan Giggenbach                          *
+*******************************************************************
+
+Parsen der SVG-Datei
+--------------------
+
+Die SVG Datei wurde zeilenweise gelesen und das Auffinden von bestimmten Strings triggerte dann die auszuführenden Aktionen. Das Schlüsselwort "path" mit "id=" in einer Zeile ist der Beginn eines Bundeslandes. Ist in der gleichen Zeile von "path" kein "id=" ist eine Stadt beschrieben.
+
+Die eingelesenen Polygone werden als Objekte vom Typ Polygon gespeichert. Diese Beinhalten einen Vektor von Punkten. Ein Bundesland besteht aus mehreren Polygonen. Zum Teil liegen innerhalb von Bundesländern Stadtstaaten. Diese Bundesländer haben dieses "Loch" auch als eigenes Polygon. Auf die negative Orientierung dieser Polygone für das Berechnen der Fläche konnten wir uns nicht verlassen. Die Lösung dafür ist ein Attribut "inner" in der Klasse Polygon, das dann gesetzt wird wenn der Startpunkt für ein anderes Polygon des Bundesstaats im "Hauptpolygon" liegt.
+
+Berechnen der Fläche
+--------------------
+
+Das Berechnen der Fläche geschieht mit der Gaußschen Dreiecksformel. Für die absoluten Flächenwerte wurde noch ein Faktor multipliziert.
+Beim Berechnen der Fläche wird das inner Polygon negativ gewertet.
+
+Point in Polygon (pip)
+----------------------
+
+Damit der pip test nicht ergibt das Berlin in Brandenburg liegt werden für den City in State Test alle Polygone des Bundeslandes mit dem Punkt geprüft. Die PIP Methode des Polygons gibt 0 zurück wenn der Punkt nicht im Polygon ist. Falls der Punkt im Polygon ist und der Typ nicht inner ist dann gibt die Methode 1 zurück, falls der Typ inner ist -1.
+Für die Auswertung kann so einfach der return wert aller pip tests aufaddiert werden.
+
+
