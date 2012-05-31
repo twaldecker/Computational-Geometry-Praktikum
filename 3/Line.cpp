@@ -30,20 +30,17 @@ bool Line::intersect( const Line* l ) const {
     q = l;
   } /* p is now the line longer or the same length then q */
 
-
   float ccwta = p->ccw( q->getA() );
   float ccwtb = p->ccw( q->getB() );
   float ccwat = q->ccw( p->getA() );
   float ccwbt = q->ccw( p->getB() );
 
   /* check collinearity of the two lines */
-  if( fabs(ccwta) <= FLT_EPSILON && fabs(ccwtb) <= FLT_EPSILON ) { /* lines are collinear */
-
+  if( fabs( ccwta ) <= FLT_EPSILON && fabs( ccwtb ) <= FLT_EPSILON ) { /* lines are collinear */
 
     /* check for four identical points */
     if( p->length() == 0 && q->length() == 0 )
       return ( p->getA() == q->getA() );
-
 
     /* now we test if the start or endpoint from q is in p */
     Point2d lambda1 = ( q->getA() - p->getA() ) / ( p->getB() - p->getA() );
@@ -63,7 +60,8 @@ bool Line::intersect( const Line* l ) const {
   }
 
   /* lines are not collinear -> check for intersection or(!) contact */
-  if( ( ( ccwta * ccwtb ) <= FLT_EPSILON ) && ( ( ccwat * ccwbt ) <= FLT_EPSILON ) )
+  if( ( ( ccwta * ccwtb ) <= FLT_EPSILON )
+      && ( ( ccwat * ccwbt ) <= FLT_EPSILON ) )
     return true;
   return false;
 }

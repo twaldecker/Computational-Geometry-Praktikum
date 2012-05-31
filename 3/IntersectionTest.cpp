@@ -1,7 +1,5 @@
 #include "IntersectionTest.h"
 
-#define DEBUG 0
-
 IntersectionTest::IntersectionTest( string filename ) :
     filename( filename ), intersectionCount( 0 ) {
 }
@@ -33,7 +31,7 @@ void IntersectionTest::calculateIntersections() {
   /* intersection calculation with two iterator-loops */
   for( vector<Line *>::iterator outerit = lines.begin(); outerit != lines.end();
       outerit++ ) {
-    j = i+1;
+    j = i + 1;
     for( vector<Line *>::iterator innerit = outerit + 1; innerit != lines.end();
         innerit++ ) {
       if( ( *outerit )->intersect( *innerit ) ) {
@@ -53,29 +51,21 @@ void IntersectionTest::printResults() {
       << endl;
 
 }
-;
 
 /* process the file line by line */
 int IntersectionTest::parse() {
-  float a[4]; /* a temporary array to store the values */
+  float pcoords[4]; /* a temporary array to store the values */
   string strline; /* one line of the file */
   open(); // first open the file, then read
   while( getline( file, strline ) ) {
     /* read line, parse float values and store in temporary array */
-    sscanf( strline.c_str(), "%f %f %f %f", &a[0], &a[1], &a[2], &a[3] );
-    /* create a new Line object and store it in the vector */
-    Line* tmpin = new Line( a[0], a[1], a[2], a[3] );
+    sscanf( strline.c_str(), "%f %f %f %f", &pcoords[0], &pcoords[1],
+        &pcoords[2], &pcoords[3] );
+    /* create new Point2d/Line objects and store them */
+    Line* tmpin = new Line( pcoords[0], pcoords[1], pcoords[2], pcoords[3] );
+    xStruct.insert( pair<float, Point2d>( tmpin->getA().getX(), tmpin->getA() ) );
+    xStruct.insert( pair<float, Point2d>( tmpin->getB().getX(), tmpin->getB() ) );
     lines.push_back( tmpin );
-
-#if DEBUG /* output */
-    cout << "Input:  " << a[0] << " " << a[1] << " " << a[2] << " " << a[3]
-    << endl;
-    Line* tmpout = lines.back();
-    cout << "Vector: " << tmpout->getA().getX() << " "
-    << tmpout->getA().getY() << " " << tmpout->getB().getX() << " "
-    << tmpout->getB().getY() << " " << endl;
-#endif /* DEBUG */
-
   }
   return 0;
 }
