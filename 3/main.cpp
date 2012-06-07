@@ -1,11 +1,11 @@
-#include "IntersectionTest.h"
+#include "SLIntersectionTest.h"
 #include "Cli.h"
 
 int main( int argc, char *argv[] ) {
 
   Cli * cli = new Cli( argc, argv );
 
-  IntersectionTest * p = new IntersectionTest( cli->getFilename() );
+  SLIntersectionTest * p = new SLIntersectionTest( cli->getFilename() );
 
   p->parse();
 
