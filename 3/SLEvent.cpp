@@ -1,7 +1,8 @@
 #include "SLEvent.h"
 
-SLEvent::SLEvent( const TYPE type, const Point2d& coord ) :
-    type( type ), coord( coord ) {
+SLEvent::SLEvent( const TYPE& type, const Point2d& coords,
+    const vector<Line *>& lines ) :
+    type( type ), coords( coords ), lines( lines ) {
 
 }
 

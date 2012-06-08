@@ -21,8 +21,9 @@ private:
   string filename;
   clock_t start, stop; /* timestamps */
   long lineCount, intersectionCount; /* count the lines and intersections */
-  map<float, SLEvent *> xStruct; /* xStruct to Store events depending on x-coordinates */
-  map<float, Line *> yStruct; /* yStruct to Store Lines depending on y-coordinates */
+  multimap<float, SLEvent *> xStruct; /* xStruct to Store events depending on x-coordinates */
+  multimap<float, Line *> yStruct; /* yStruct to Store Lines depending on y-coordinates */
+  map<int, Point2d *> intersections;
 
   void open();
   void handleEvent( const SLEvent& );

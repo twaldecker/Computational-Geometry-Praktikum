@@ -17,16 +17,26 @@ class SLEvent {
 private:
 
   TYPE type;
-  Point2d coord;
+  Point2d coords;
   vector<Line *> lines;
 
 public:
 
-  SLEvent( const TYPE, const Point2d& );
+  SLEvent( const TYPE&, const Point2d&, const vector<Line *>& );
   virtual ~SLEvent();
 
   TYPE getType() const {
     return type;
+  }
+  ;
+
+  Point2d getCoords() const {
+    return coords;
+  }
+  ;
+
+  vector<Line *> getLines() const {
+    return lines;
   }
   ;
 
