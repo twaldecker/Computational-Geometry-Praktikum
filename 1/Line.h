@@ -47,6 +47,10 @@ public:
    */
   bool intersect( const Line* ) const;
 
+  bool operator==( const Line& l ) {
+    return ( ( this->getA() == l.getA() ) && ( this->getB() == l.getB() ) );
+  }
+
 };
 
 #endif /* LINE_H_ */
