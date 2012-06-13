@@ -2,6 +2,7 @@
 #define CLI_H_
 
 #include <cstdlib>
+#include <getopt.h>
 #include <iostream>
 
 using namespace std;
