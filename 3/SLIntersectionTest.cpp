@@ -19,6 +19,8 @@ void SLIntersectionTest::open() {
 void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
   multimap<float, Line *>::iterator it;
+  multimap<float, Line *>::iterator back;
+  multimap<float, Line *>::iterator next;
   multimap<float, Line *>::iterator lastelement;
   vector<Line *> lines;
   Point2d * ip;
@@ -30,10 +32,11 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
         pair<float, Line *>( e.getCoords().getY(), e.getLines()[0] ) );
     /* check intersection with the two neighbors if they exist */
     if( it != yStruct.begin() ) {
-      if( it->second->intersect( ( it-- )->second, ip ) ) {
+      back = --it; it++;
+      if( it->second->intersect( back->second, ip ) ) {
         /* generate new event and store it */
         lines.push_back( it->second );
-        lines.push_back( ( it-- )->second );
+        lines.push_back( back->second );
         SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
         /* use the x-coordinate as key */
         xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
@@ -44,10 +47,11 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     lastelement = yStruct.end();
     lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
     if( it != lastelement ) {
-      if( it->second->intersect( ( it++ )->second, ip ) ) {
+      next = ++it; it--;
+      if( it->second->intersect( next->second, ip ) ) {
         /* generate new event and store it */
         lines.push_back( it->second );
-        lines.push_back( ( it++ )->second );
+        lines.push_back( next->second );
         SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
         /* use the x-coordinate as key */
         xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
@@ -66,10 +70,12 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     lastelement = yStruct.end();
     lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
     if( ( it != yStruct.begin() ) && ( it != lastelement ) ) {
-      if( ( it-- )->second->intersect( ( it++ )->second, ip ) ) {
+      back = --it; it++;
+      next = ++it; it--;
+      if( back->second->intersect( next->second, ip ) ) {
         /* generate new event and store it */
-        lines.push_back( ( it-- )->second );
-        lines.push_back( ( it++ )->second );
+        lines.push_back( back->second );
+        lines.push_back( next->second );
         SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
         /* use the x-coordinate as key */
         xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
