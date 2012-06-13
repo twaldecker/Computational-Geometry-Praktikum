@@ -20,6 +20,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
   multimap<float, Line *>::iterator it;
   multimap<float, Line *>::iterator lastelement;
+  vector<Line *> lines;
+  Point2d * ip;
 
   switch( e.getType() ) {
   case BEGIN:
@@ -28,14 +30,30 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
         pair<float, Line *>( e.getCoords().getY(), e.getLines()[0] ) );
     /* check intersection with the two neighbors if they exist */
     if( it != yStruct.begin() ) {
-      if( it->second->intersect( ( it-- )->second ) )
-        intersectionCount++; /* TODO: calculate coordinates store them and generate SLEvent */
+      if( it->second->intersect( ( it-- )->second, ip ) ) {
+        /* generate new event and store it */
+        lines.push_back( it->second );
+        lines.push_back( ( it-- )->second );
+        SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
+        /* use the x-coordinate as key */
+        xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
+        /* insert intersection in map */
+        intersections.insert( ip );
+      }
     }
     lastelement = yStruct.end();
     lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
     if( it != lastelement ) {
-      if( it->second->intersect( ( it++ )->second ) )
-        intersectionCount++; /* TODO: calculate coordinates store them and generate SLEvent */
+      if( it->second->intersect( ( it++ )->second, ip ) ) {
+        /* generate new event and store it */
+        lines.push_back( it->second );
+        lines.push_back( ( it++ )->second );
+        SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
+        /* use the x-coordinate as key */
+        xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
+        /* insert intersection in map */
+        intersections.insert( ip );
+      }
     }
     break;
 
@@ -48,8 +66,16 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     lastelement = yStruct.end();
     lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
     if( ( it != yStruct.begin() ) && ( it != lastelement ) ) {
-      if( ( it-- )->second->intersect( ( it++ )->second ) )
-        intersectionCount++;
+      if( ( it-- )->second->intersect( ( it++ )->second, ip ) ) {
+        /* generate new event and store it */
+        lines.push_back( ( it-- )->second );
+        lines.push_back( ( it++ )->second );
+        SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
+        /* use the x-coordinate as key */
+        xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
+        /* insert intersection in map */
+        intersections.insert( ip );
+      }
     }
     /* remove line object */
     yStruct.erase( it );
@@ -77,7 +103,7 @@ void SLIntersectionTest::calculateIntersections() {
 
 void SLIntersectionTest::printResults() {
 
-  cerr << "Number of Lines: " << lineCount << endl << intersectionCount
+  cerr << "Number of Lines: " << lineCount << endl << intersections.size()
       << " intersections" << endl << "calculated in " << getTime() << " seconds"
       << endl;
 

@@ -17,7 +17,7 @@ Line::~Line() {
 /**
  * calculate if this line intersects with the provided Line l
  */
-bool Line::intersect( const Line* l ) const {
+bool Line::intersect( const Line* l, Point2d * ip ) const {
 
   const Line* p, *q;
   /* compare length of lines and assign pointers */

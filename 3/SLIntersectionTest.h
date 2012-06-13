@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <set>
 #include <map>
 #include <ctime>
 #include <cstdlib>
@@ -23,7 +24,7 @@ private:
   long lineCount, intersectionCount; /* count the lines and intersections */
   multimap<float, SLEvent *> xStruct; /* xStruct to Store events depending on x-coordinates */
   multimap<float, Line *> yStruct; /* yStruct to Store Lines depending on y-coordinates */
-  map<int, Point2d *> intersections;
+  set<Point2d *> intersections;
 
   void open();
   void handleEvent( const SLEvent& );
