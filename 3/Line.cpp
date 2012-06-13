@@ -45,10 +45,8 @@ bool Line::intersect( const Line* l, Point2d * intersection ) const {
   /* lines are not collinear -> check for intersection or(!) contact */
   if( ( ( ccwta * ccwtb ) <= FLT_EPSILON ) && ( ( ccwat * ccwbt ) <= FLT_EPSILON ) )
   {
-    //now calculate the lambda:
-    Point2d lambda1 = ( q->getA() - p->getA() ) / ( p->getB() - p->getA() );
 
-    //calculate the point from lambda:
+    //calculate the point
     intersection = new Point2d ( ((p->getA().getX() * p->getB().getY() - p->getA().getY() *  p->getB().getX())*(q->getA().getX() - q->getB().getX())-(p->getA().getX() - p->getB().getX()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX())*(q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()))
       ,
         ((p->getA().getX() * p->getB().getY() - p->getA().getY() * p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()))
