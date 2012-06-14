@@ -27,6 +27,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
   switch( e.getType() ) {
   case BEGIN:
+    /* at the Beginning of a line check if it intersects with the upper or lower line y-wise */
     /* store line in yStruct: use y-coordinate of first point as key */
     it = yStruct.insert(
         pair<float, Line *>( e.getCoords().getY(), e.getLines()[0] ) );
@@ -64,6 +65,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     break;
 
   case END:
+    /* at the end of a line check if the new lower and upper line intersect each other. */
     /* identify the correct object not only by key but also by the line */
     do {
       it = yStruct.find( e.getLines()[0]->getA().getY() );
@@ -92,7 +94,21 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     break;
 
   case INTERSECTION:
-    /* TODO: handler for intersection events */
+    /* TODO: check code */
+    /* at the intersection swap the two intersecting lines and check it with the new neighbors. */
+    /* swap the lines in the yStruct */
+    /*find the line in the point in the y-struct.*/
+    do {
+      it = yStruct.find( e.getLines()[0]->getA().getY() );
+    } while( it->second != e.getLines()[0] );
+
+
+
+
+    /* now check the upper line with the line over the two lines */
+
+    /* check teh under line with the line below the two lines */
+
     break;
   }
 
@@ -131,17 +147,18 @@ void SLIntersectionTest::parse() {
     sscanf( strline.c_str(), "%f %f %f %f", coords, coords + 1, coords + 2,
         coords + 3 );
 
-    /* create new Lines/SLEvents and store them */
-
     /* compare the x-coordinates of the points. if the second point is lower swap the points. */
     if( coords[2] <= coords[0] ) {
       swap( coords[2], coords[0] );
       swap( coords[1], coords[3] );
-    }
+    } /* line begins now at smaller x-value */
 
+    /* create a line vector, add the line and store it in the Events*/
     vector<Line *> lines;
     Line * line = new Line( coords[0], coords[1], coords[2], coords[3] );
     lines.push_back( line );
+
+    /* create new SLEvents and store them */
     SLEvent * slb = new SLEvent( BEGIN, Point2d( coords[0], coords[1] ),
         lines );
     SLEvent * sle = new SLEvent( END, Point2d( coords[2], coords[3] ), lines );
