@@ -32,7 +32,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
         pair<float, Line *>( e.getCoords().getY(), e.getLines()[0] ) );
     /* check intersection with the two neighbors if they exist */
     if( it != yStruct.begin() ) {
-      back = --it; it++;
+      back = --it;
+      it++;
       if( it->second->intersect( back->second, ip ) ) {
         /* generate new event and store it */
         lines.push_back( it->second );
@@ -47,7 +48,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     lastelement = yStruct.end();
     lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
     if( it != lastelement ) {
-      next = ++it; it--;
+      next = ++it;
+      it--;
       if( it->second->intersect( next->second, ip ) ) {
         /* generate new event and store it */
         lines.push_back( it->second );
@@ -70,8 +72,10 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     lastelement = yStruct.end();
     lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
     if( ( it != yStruct.begin() ) && ( it != lastelement ) ) {
-      back = --it; it++;
-      next = ++it; it--;
+      back = --it;
+      it++;
+      next = ++it;
+      it--;
       if( back->second->intersect( next->second, ip ) ) {
         /* generate new event and store it */
         lines.push_back( back->second );
@@ -126,33 +130,25 @@ void SLIntersectionTest::parse() {
     /* read line, parse float values and store them in the temporary array */
     sscanf( strline.c_str(), "%f %f %f %f", coords, coords + 1, coords + 2,
         coords + 3 );
+
     /* create new Lines/SLEvents and store them */
 
-    /* BEGIN/END depends on the order of the x-coordinates */
-    if( coords[0] <= coords[2] ) {
-      vector<Line *> lines;
-      Line * line = new Line( coords[0], coords[1], coords[2], coords[3] );
-      lines.push_back( line );
-      SLEvent * slb = new SLEvent( BEGIN, Point2d( coords[0], coords[1] ),
-          lines );
-      SLEvent * sle = new SLEvent( END, Point2d( coords[2], coords[3] ),
-          lines );
-      /* use the x-coordinate as key */
-      xStruct.insert( pair<float, SLEvent *>( coords[0], slb ) );
-      xStruct.insert( pair<float, SLEvent *>( coords[2], sle ) );
+    /* compare the x-coordinates of the points. if the second point is lower swap the points. */
+    if( coords[2] <= coords[0] ) {
+      swap( coords[2], coords[0] );
+      swap( coords[1], coords[3] );
     }
-    else {
-      vector<Line *> lines;
-      Line * line = new Line( coords[2], coords[3], coords[0], coords[1] );
-      lines.push_back( line );
-      SLEvent * slb = new SLEvent( BEGIN, Point2d( coords[2], coords[3] ),
-          lines );
-      SLEvent * sle = new SLEvent( END, Point2d( coords[0], coords[1] ),
-          lines );
-      /* use the x-coordinate as key */
-      xStruct.insert( pair<float, SLEvent *>( coords[2], slb ) );
-      xStruct.insert( pair<float, SLEvent *>( coords[0], sle ) );
-    }
+
+    vector<Line *> lines;
+    Line * line = new Line( coords[0], coords[1], coords[2], coords[3] );
+    lines.push_back( line );
+    SLEvent * slb = new SLEvent( BEGIN, Point2d( coords[0], coords[1] ),
+        lines );
+    SLEvent * sle = new SLEvent( END, Point2d( coords[2], coords[3] ), lines );
+    /* use the x-coordinate as key */
+    xStruct.insert( pair<float, SLEvent *>( coords[0], slb ) );
+    xStruct.insert( pair<float, SLEvent *>( coords[2], sle ) );
+
     /* line counter */
     lineCount++;
   }

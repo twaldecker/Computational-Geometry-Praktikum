@@ -2,6 +2,7 @@
 #define SLINTERSECTIONTEST_H_
 
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include <vector>
 #include <set>
