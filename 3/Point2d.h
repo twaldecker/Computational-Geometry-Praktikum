@@ -24,6 +24,11 @@ public:
     return y;
   }
 
+  void set(float x, float y) {
+    this->x = x;
+    this->y = y;
+  }
+
   /**
    * calculate the zero-vector of this point
    */

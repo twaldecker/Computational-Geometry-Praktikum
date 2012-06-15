@@ -23,7 +23,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
   multimap<float, Line *>::iterator next;
   multimap<float, Line *>::iterator lastelement;
   vector<Line *> lines;
-  Point2d * ip;
+  Point2d ip; /* the intersection point returned from intersect */
 
   switch( e.getType() ) {
   case BEGIN:
@@ -39,11 +39,11 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
         /* generate new event and store it */
         lines.push_back( it->second );
         lines.push_back( back->second );
-        SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
+        SLEvent * sli = new SLEvent( INTERSECTION, ip, lines );
         /* use the x-coordinate as key */
-        xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
+        xStruct.insert( pair<float, SLEvent *>( ip.getX(), sli ) );
         /* insert intersection in map */
-        intersections.insert( ip );
+        intersections.insert( &ip );
       }
     }
     lastelement = yStruct.end();
@@ -51,17 +51,19 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     if( it != lastelement ) {
       next = ++it;
       it--;
+    /* unsecure code */
       if( it->second->intersect( next->second, ip ) ) {
         /* generate new event and store it */
         lines.push_back( it->second );
         lines.push_back( next->second );
-        SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
+        SLEvent * sli = new SLEvent( INTERSECTION, ip, lines );
         /* use the x-coordinate as key */
-        xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
+        xStruct.insert( pair<float, SLEvent *>( ip.getX(), sli ) );
         /* insert intersection in map */
-        intersections.insert( ip );
+        intersections.insert( &ip );
       }
     }
+    /* end unsecure code */
     break;
 
   case END:
@@ -82,11 +84,11 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
         /* generate new event and store it */
         lines.push_back( back->second );
         lines.push_back( next->second );
-        SLEvent * sli = new SLEvent( INTERSECTION, *ip, lines );
+        SLEvent * sli = new SLEvent( INTERSECTION, ip, lines );
         /* use the x-coordinate as key */
-        xStruct.insert( pair<float, SLEvent *>( ip->getX(), sli ) );
+        xStruct.insert( pair<float, SLEvent *>( ip.getX(), sli ) );
         /* insert intersection in map */
-        intersections.insert( ip );
+        intersections.insert( &ip );
       }
     }
     /* remove line object */
@@ -98,10 +100,10 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     /* at the intersection swap the two intersecting lines and check it with the new neighbors. */
     /* swap the lines in the yStruct */
     /*find the line in the point in the y-struct.*/
-    do {
+    /*do {
       it = yStruct.find( e.getLines()[0]->getA().getY() );
     } while( it->second != e.getLines()[0] );
-
+*/
 
 
 
@@ -116,7 +118,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
 void SLIntersectionTest::calculateIntersections() {
 
-  map<float, SLEvent *>::iterator it;
+  multimap<float, SLEvent *>::iterator it;
 
   start = clock();
   while( !xStruct.empty() ) {
