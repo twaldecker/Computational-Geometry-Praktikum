@@ -6,6 +6,15 @@ SLEvent::SLEvent( const TYPE& type, const Point2d& coords,
 
 }
 
+SLEvent::SLEvent( const int& t, const Point2d& p,  Line& l ): type(t), coords(p) {
+  lines.push_back( &l );
+}
+
+SLEvent::SLEvent( const int& t, const Point2d& p,  Line& l1, Line& l2): type(t), coords(p) {
+  lines.push_back( &l1 );
+  lines.push_back( &l2 );
+}
+
 SLEvent::~SLEvent() {
   // TODO Auto-generated destructor stub
 }

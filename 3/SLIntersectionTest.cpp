@@ -18,94 +18,77 @@ void SLIntersectionTest::open() {
 
 void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
-  multimap<float, Line *>::iterator it;
-  multimap<float, Line *>::iterator back;
-  multimap<float, Line *>::iterator next;
-  multimap<float, Line *>::iterator lastelement;
-  vector<Line *> lines;
-  Point2d ip; /* the intersection point returned from intersect */
+  list<Line *>::iterator it = yStruct.begin();
+  list<Line *>::iterator it2;
+  list<Line *>::iterator next;
+  list<Line *>::iterator prev;
+  Point2d intersection; /* the intersection point returned from intersect */
 
   switch( e.getType() ) {
   case BEGIN:
-    /* at the Beginning of a line check if it intersects with the upper or lower line y-wise */
-    /* store line in yStruct: use y-coordinate of first point as key */
-    it = yStruct.insert(
-        pair<float, Line *>( e.getCoords().getY(), e.getLines()[0] ) );
-    /* check intersection with the two neighbors if they exist */
-    if( it != yStruct.begin() ) {
-      back = --it;
+    /* at the Beginning of a line insert it in the yStruct and
+     * check if it intersects with the upper or lower line y-wise
+     * if it is not the only line in yStruct check it with the lower and higher lines.
+     */
+
+    //move the iterator to the position of the line with lower y
+    while( e.getLines()[0]->getA().getY() < ( *it )->getA().getY() ) //ERROR HERE?
       it++;
-      if( it->second->intersect( back->second, ip ) ) {
-        /* generate new event and store it */
-        lines.push_back( it->second );
-        lines.push_back( back->second );
-        SLEvent * sli = new SLEvent( INTERSECTION, ip, lines );
-        /* use the x-coordinate as key */
-        xStruct.insert( pair<float, SLEvent *>( ip.getX(), sli ) );
-        /* insert intersection in map */
-        intersections.insert( &ip );
-      }
+    it++;
+
+    //insert the line.
+    it = yStruct.insert( it, e.getLines()[0] );
+
+    next = prev = it;
+    next++;
+    prev--;
+
+    //test intersection with top and bottom line
+    if( ( *it )->intersect( *prev, intersection ) ) {
+      xStruct.insert(
+          pair<float, SLEvent *>( intersection.getX(),
+              new SLEvent( INTERSECTION, intersection, **it, **prev ) ) );
+      intersections.insert( &intersection );
     }
-    lastelement = yStruct.end();
-    lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
-    if( it != lastelement ) {
-      next = ++it;
-      it--;
-    /* unsecure code */
-      if( it->second->intersect( next->second, ip ) ) {
-        /* generate new event and store it */
-        lines.push_back( it->second );
-        lines.push_back( next->second );
-        SLEvent * sli = new SLEvent( INTERSECTION, ip, lines );
-        /* use the x-coordinate as key */
-        xStruct.insert( pair<float, SLEvent *>( ip.getX(), sli ) );
-        /* insert intersection in map */
-        intersections.insert( &ip );
-      }
+
+    if( ( *it )->intersect( *next, intersection ) ) {
+      xStruct.insert(
+          pair<float, SLEvent *>( intersection.getX(),
+              new SLEvent( INTERSECTION, intersection, **it, **next ) ) );
+      intersections.insert( &intersection );
     }
-    /* end unsecure code */
+
     break;
 
   case END:
     /* at the end of a line check if the new lower and upper line intersect each other. */
-    /* identify the correct object not only by key but also by the line */
-    do {
-      it = yStruct.find( e.getLines()[0]->getA().getY() );
-    } while( it->second != e.getLines()[0] );
-    /* check intersection between the two neighbors if they exist */
-    lastelement = yStruct.end();
-    lastelement--; /* .end() is an iterator referring to the past-the-end element !!! */
-    if( ( it != yStruct.begin() ) && ( it != lastelement ) ) {
-      back = --it;
+
+    while( *it != e.getLines()[0] )
       it++;
-      next = ++it;
-      it--;
-      if( back->second->intersect( next->second, ip ) ) {
-        /* generate new event and store it */
-        lines.push_back( back->second );
-        lines.push_back( next->second );
-        SLEvent * sli = new SLEvent( INTERSECTION, ip, lines );
-        /* use the x-coordinate as key */
-        xStruct.insert( pair<float, SLEvent *>( ip.getX(), sli ) );
-        /* insert intersection in map */
-        intersections.insert( &ip );
-      }
-    }
-    /* remove line object */
+
+    next = prev = it;
+    next++;
+    prev--;
+
     yStruct.erase( it );
+
+    if( ( *next )->intersect( *prev, intersection ) ) {
+      xStruct.insert(
+          pair<float, SLEvent *>( intersection.getX(),
+              new SLEvent( INTERSECTION, intersection, **prev, **next ) ) );
+      intersections.insert( &intersection );
+    }
+
     break;
 
   case INTERSECTION:
-    /* TODO: check code */
-    /* at the intersection swap the two intersecting lines and check it with the new neighbors. */
-    /* swap the lines in the yStruct */
-    /*find the line in the point in the y-struct.*/
+    /* at the intersection swap the two intersecting lines and check it with the new neighbors.*/
+
+
     /*do {
-      it = yStruct.find( e.getLines()[0]->getA().getY() );
-    } while( it->second != e.getLines()[0] );
-*/
-
-
+     it = yStruct.find( e.getLines()[0]->getA().getY() );
+     } while( it->second != e.getLines()[0] );
+     */
 
     /* now check the upper line with the line over the two lines */
 
@@ -140,8 +123,11 @@ void SLIntersectionTest::printResults() {
 /* process the file line by line */
 void SLIntersectionTest::parse() {
 
+  Line * line;
   float coords[4]; /* a temporary array to store the values */
   string strline; /* one line of the file */
+  float ymax = 0, ymin = 0;
+  bool first = 1;
 
   open(); /* first open the file, then read */
   while( getline( file, strline ) ) {
@@ -155,15 +141,30 @@ void SLIntersectionTest::parse() {
       swap( coords[1], coords[3] );
     } /* line begins now at smaller x-value */
 
+    /*
+     * store the max and min values of the coordinates.
+     * first is only in the first loop 1.
+     **/
+    if( ( coords[1] < ymin ) || first )
+      ymin = coords[1];
+    if( ( coords[1] > ymax ) || first )
+      ymax = coords[1];
+
+    first = 0;
+
+    if( ( coords[3] < ymin ) )
+      ymin = coords[3];
+    if( ( coords[3] > ymax ) )
+      ymax = coords[3];
+
     /* create a line vector, add the line and store it in the Events*/
-    vector<Line *> lines;
-    Line * line = new Line( coords[0], coords[1], coords[2], coords[3] );
-    lines.push_back( line );
+    line = new Line( coords[0], coords[1], coords[2], coords[3] );
 
     /* create new SLEvents and store them */
     SLEvent * slb = new SLEvent( BEGIN, Point2d( coords[0], coords[1] ),
-        lines );
-    SLEvent * sle = new SLEvent( END, Point2d( coords[2], coords[3] ), lines );
+        *line );
+    SLEvent * sle = new SLEvent( END, Point2d( coords[2], coords[3] ), *line );
+
     /* use the x-coordinate as key */
     xStruct.insert( pair<float, SLEvent *>( coords[0], slb ) );
     xStruct.insert( pair<float, SLEvent *>( coords[2], sle ) );
@@ -171,6 +172,13 @@ void SLIntersectionTest::parse() {
     /* line counter */
     lineCount++;
   }
+
+  /* Now create dummy lines with the highest / lowest yValue */
+  line = new Line( 0, ymin - 1, 1, ymin - 1 );
+  yStruct.push_front( line );
+  line = new Line( 0, ymax + 1, 1, ymax + 1 );
+  yStruct.push_back( line );
+
 }
 
 SLIntersectionTest::~SLIntersectionTest() {

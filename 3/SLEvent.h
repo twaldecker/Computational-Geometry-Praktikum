@@ -23,22 +23,34 @@ private:
 public:
 
   SLEvent( const TYPE&, const Point2d&, const vector<Line *>& );
+  SLEvent( const TYPE&, const Point2d&, Line&, Line& );
+  SLEvent( const TYPE&, const Point2d&, Line& );
+
   virtual ~SLEvent();
 
   TYPE getType() const {
     return type;
   }
-  ;
 
   Point2d getCoords() const {
     return coords;
   }
-  ;
 
   vector<Line *> getLines() const {
     return lines;
   }
-  ;
+
+  bool operator<( const SLEvent & q ) const {
+    return getCoords().getY() < q.getCoords().getY();
+  }
+
+  static bool compare_x( const SLEvent & a, const SLEvent & b ) {
+    return a.getCoords().getX() < b.getCoords().getX();
+  }
+
+  static bool compare_y( const SLEvent * a, const SLEvent * b ) {
+    return a->getCoords().getY() < b->getCoords().getY();
+  }
 
 };
 
