@@ -30,6 +30,7 @@ private:
 
   void open();
   void handleEvent( const SLEvent& );
+  bool intersects( Line *, Line * );
 
 public:
 

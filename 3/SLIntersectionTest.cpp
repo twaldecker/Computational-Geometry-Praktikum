@@ -32,9 +32,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
      */
 
     //move the iterator to the position of the line with lower y
-    while( e.getLines()[0]->getA().getY() < ( *it )->getA().getY() ) //ERROR HERE?
+    while( ( e.getLines()[0]->getA().getY() ) > ( ( *it )->getA().getY() ) )
       it++;
-    it++;
 
     //insert the line.
     it = yStruct.insert( it, e.getLines()[0] );
@@ -44,19 +43,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     prev--;
 
     //test intersection with top and bottom line
-    if( ( *it )->intersect( *prev, intersection ) ) {
-      xStruct.insert(
-          pair<float, SLEvent *>( intersection.getX(),
-              new SLEvent( INTERSECTION, intersection, **it, **prev ) ) );
-      intersections.insert( &intersection );
-    }
-
-    if( ( *it )->intersect( *next, intersection ) ) {
-      xStruct.insert(
-          pair<float, SLEvent *>( intersection.getX(),
-              new SLEvent( INTERSECTION, intersection, **it, **next ) ) );
-      intersections.insert( &intersection );
-    }
+    intersects( *prev, *it );
+    intersects( *it, *next );
 
     break;
 
@@ -72,31 +60,52 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
     yStruct.erase( it );
 
-    if( ( *next )->intersect( *prev, intersection ) ) {
-      xStruct.insert(
-          pair<float, SLEvent *>( intersection.getX(),
-              new SLEvent( INTERSECTION, intersection, **prev, **next ) ) );
-      intersections.insert( &intersection );
-    }
+    intersects( *prev, *next );
 
     break;
 
   case INTERSECTION:
-    /* at the intersection swap the two intersecting lines and check it with the new neighbors.*/
+    /* at the intersection swap the two intersecting lines and check it with the new neighbors.
+     * note that before the intersection in e.lines[0] is the lower line and e.lines[1] is the upper line.
+     **/
+    it2 = it;
+    while( *it != e.getLines()[0] )
+      it++;
+    while( *it2 != e.getLines()[1] )
+      it2++;
 
+    //swap lines: store line from it2, remove it and insert it before it.
+    Line * l = *it2;
+    yStruct.erase( it2 );
+    it2 = yStruct.insert( it, l );
 
-    /*do {
-     it = yStruct.find( e.getLines()[0]->getA().getY() );
-     } while( it->second != e.getLines()[0] );
-     */
+    next = it;
+    next++;
+    prev = it2;
+    prev--;
 
-    /* now check the upper line with the line over the two lines */
-
-    /* check teh under line with the line below the two lines */
+    //test intersection with top and bottom line
+    intersects( *prev, *it );
+    intersects( *it, *next );
 
     break;
   }
 
+}
+
+/**
+ * This is a helper function which calls the Line->intersect method and adds a new Event.
+ */
+bool SLIntersectionTest::intersects( Line * a, Line * b ) {
+  Point2d intersection;
+  if( ( a )->intersect( b, intersection ) ) {
+    xStruct.insert(
+        pair<float, SLEvent *>( intersection.getX(),
+            new SLEvent( INTERSECTION, intersection, *a, *b ) ) );
+    intersections.insert( &intersection );
+    return true;
+  }
+  return false;
 }
 
 void SLIntersectionTest::calculateIntersections() {
