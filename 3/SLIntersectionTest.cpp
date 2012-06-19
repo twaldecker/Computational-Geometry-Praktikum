@@ -136,6 +136,7 @@ void SLIntersectionTest::parse() {
   float coords[4]; /* a temporary array to store the values */
   string strline; /* one line of the file */
   float ymax = 0, ymin = 0;
+  float xmax = 0, xmin = 0; /* for debug purposes */
   bool first = 1;
 
   open(); /* first open the file, then read */
@@ -158,6 +159,10 @@ void SLIntersectionTest::parse() {
       ymin = coords[1];
     if( ( coords[1] > ymax ) || first )
       ymax = coords[1];
+    if( ( coords[0] < xmin ) || first )
+      xmin = coords[0];
+    if( ( coords[0] > xmax ) || first )
+      xmax = coords[0];
 
     first = 0;
 
@@ -165,6 +170,10 @@ void SLIntersectionTest::parse() {
       ymin = coords[3];
     if( ( coords[3] > ymax ) )
       ymax = coords[3];
+    if( ( coords[2] < xmin ) )
+      xmin = coords[2];
+    if( ( coords[2] > xmax ) )
+      xmax = coords[2];
 
     /* create a line vector, add the line and store it in the Events*/
     line = new Line( coords[0], coords[1], coords[2], coords[3] );
@@ -183,7 +192,7 @@ void SLIntersectionTest::parse() {
   }
 
   /* Now create dummy lines with the highest / lowest yValue */
-  line = new Line( 0, ymin - 1, 1, ymin - 1 );
+  line = new Line( 0, ymin - 1, 1, ymin - 1 ); // break here and inspect xmin, xmax, ymin, ymax
   yStruct.push_front( line );
   line = new Line( 0, ymax + 1, 1, ymax + 1 );
   yStruct.push_back( line );
