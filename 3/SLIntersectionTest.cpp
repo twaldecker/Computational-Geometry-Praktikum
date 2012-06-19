@@ -88,7 +88,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     break;
 
   case INTERSECTION:
-    /* TODO: handler for intersection events */
+
     break;
   }
 
