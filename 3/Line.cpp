@@ -1,6 +1,5 @@
 #include "Line.h"
 
-
 Line::Line( const Point2d a, const Point2d b ) :
     a( a ), b( b ) {
 
@@ -31,24 +30,40 @@ bool Line::intersect( const Line* l, Point2d & intersection ) {
     q = l;
   } /* p is now the line longer or the same length then q */
 
-  float ccwta = p->ccw( q->getA() );
-  float ccwtb = p->ccw( q->getB() );
-  float ccwat = q->ccw( p->getA() );
-  float ccwbt = q->ccw( p->getB() );
+  float ccwpa = p->ccw( q->getA() );
+  float ccwpb = p->ccw( q->getB() );
+  float ccwqa = q->ccw( p->getA() );
+  float ccwqb = q->ccw( p->getB() );
 
   /* check collinearity of the two lines */
-  if( fabs( ccwta ) <= FLT_EPSILON && fabs( ccwtb ) <= FLT_EPSILON ) { /* lines are collinear */
+  if( fabs( ccwpa ) <= FLT_EPSILON && fabs( ccwpb ) <= FLT_EPSILON ) { /* lines are collinear */
     return false; /* if they are collinear, just return false. */
   }
 
   /* lines are not collinear -> check for intersection or(!) contact */
-  if( ( ( ccwta * ccwtb ) <= FLT_EPSILON ) && ( ( ccwat * ccwbt ) <= FLT_EPSILON ) )
-  {
+  if( ( ( ccwpa * ccwpb ) <= FLT_EPSILON )
+      && ( ( ccwqa * ccwqb ) <= FLT_EPSILON ) ) {
 
     //calculate the point
-    float x = ((p->getA().getX() * p->getB().getY() - p->getA().getY() *  p->getB().getX())*(q->getA().getX() - q->getB().getX())-(p->getA().getX() - p->getB().getX()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX())*(q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()));
-    float y = ((p->getA().getX() * p->getB().getY() - p->getA().getY() * p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()));
-    intersection.set(x,y);
+    float den = ( p->getA().getX() - p->getB().getX() )
+        * ( q->getA().getY() - q->getB().getY() )
+        - ( p->getA().getY() - p->getB().getY() )
+            * ( q->getA().getX() - q->getB().getX() );
+
+    float x = (( p->getA().getX() * p->getB().getY()
+        - p->getA().getY() * p->getB().getX() )
+        * ( q->getA().getX() - q->getB().getX() )
+        - ( p->getA().getX() - p->getB().getX() )
+            * ( q->getA().getX() * q->getB().getY()
+                - q->getA().getY() * q->getB().getX() )) / den;
+
+    float y = (( p->getA().getX() * p->getB().getY()
+        - p->getA().getY() * p->getB().getX() )
+        * ( q->getA().getY() - q->getB().getY() )
+        - ( p->getA().getY() - p->getB().getY() )
+            * ( q->getA().getX() * q->getB().getY()
+                - q->getA().getY() * q->getB().getX() )) / den;
+    intersection.set( x, y );
 
     return true;
   }

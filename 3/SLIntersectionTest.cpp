@@ -86,7 +86,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
     //test intersection with top and bottom line
     intersects( *prev, *it );
-    intersects( *it, *next );
+    intersects( *it2, *next );
 
     break;
   }
@@ -97,12 +97,13 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
  * This is a helper function which calls the Line->intersect method and adds a new Event.
  */
 bool SLIntersectionTest::intersects( Line * a, Line * b ) {
-  Point2d intersection;
-  if( ( a )->intersect( b, intersection ) ) {
+  Point2d * intersection = new Point2d;
+
+  if( ( a )->intersect( b, *intersection ) ) {
     xStruct.insert(
-        pair<float, SLEvent *>( intersection.getX(),
-            new SLEvent( INTERSECTION, intersection, *a, *b ) ) );
-    intersections.insert( &intersection );
+        pair<float, SLEvent *>( intersection->getX(),
+            new SLEvent( INTERSECTION, *intersection, *a, *b ) ) );
+    intersections.insert( intersection );
     return true;
   }
   return false;
@@ -110,13 +111,12 @@ bool SLIntersectionTest::intersects( Line * a, Line * b ) {
 
 void SLIntersectionTest::calculateIntersections() {
 
-  multimap<float, SLEvent *>::iterator it;
+  multimap<float, SLEvent *>::iterator it = xStruct.begin();
 
   start = clock();
-  while( !xStruct.empty() ) {
-    it = xStruct.begin();
+  while( it != xStruct.end() ) {
     SLIntersectionTest::handleEvent( *it->second );
-    xStruct.erase( it );
+    it++;
   }
   stop = clock();
 }
