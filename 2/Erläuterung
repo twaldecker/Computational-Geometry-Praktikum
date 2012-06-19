@@ -6,7 +6,7 @@
 Parsen der SVG-Datei
 --------------------
 
-Die SVG Datei wurde zeilenweise gelesen und das Auffinden von bestimmten Strings triggerte dann die auszuführenden Aktionen. Das Schlüsselwort "path" mit "id=" in einer Zeile ist der Beginn eines Bundeslandes. Ist in der gleichen Zeile von "path" kein "id=" ist eine Stadt beschrieben.
+Die SVG Datei wurde zeilenweise gelesen und das Auffinden von bestimmten Strings triggert dann die auszuführenden Aktionen. Das Schlüsselwort "path" mit "id=" in einer Zeile ist der Beginn eines Bundeslandes. Ist in der gleichen Zeile von "path" kein "id=" ist der Datensatz eine Stadt.
 
 Die eingelesenen Polygone werden als Objekte vom Typ Polygon gespeichert. Diese Beinhalten einen Vektor von Punkten. Ein Bundesland besteht aus mehreren Polygonen. Zum Teil liegen innerhalb von Bundesländern Stadtstaaten. Diese Bundesländer haben dieses "Loch" auch als eigenes Polygon. Auf die negative Orientierung dieser Polygone für das Berechnen der Fläche konnten wir uns nicht verlassen. Die Lösung dafür ist ein Attribut "inner" in der Klasse Polygon, das dann gesetzt wird wenn der Startpunkt für ein anderes Polygon des Bundesstaats im "Hauptpolygon" liegt.
 

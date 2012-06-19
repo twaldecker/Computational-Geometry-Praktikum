@@ -45,7 +45,7 @@ public:
   /**
    * calculate if this line intersects with the provided Line l
    */
-  bool intersect( const Line*, Point2d*  ) const;
+  bool intersect( const Line*, Point2d&  );
 
 };
 

@@ -19,8 +19,7 @@ Line::~Line() {
  * calculate if this line intersects with the provided Line l
  * Point2d * intersection output of the intersection point
  */
-bool Line::intersect( const Line* l, Point2d * intersection ) const {
-
+bool Line::intersect( const Line* l, Point2d & intersection ) {
   const Line* p, *q;
   /* compare length of lines and assign pointers */
   if( this->length() < l->length() ) {
@@ -47,10 +46,9 @@ bool Line::intersect( const Line* l, Point2d * intersection ) const {
   {
 
     //calculate the point
-    intersection = new Point2d ( ((p->getA().getX() * p->getB().getY() - p->getA().getY() *  p->getB().getX())*(q->getA().getX() - q->getB().getX())-(p->getA().getX() - p->getB().getX()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX())*(q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()))
-      ,
-        ((p->getA().getX() * p->getB().getY() - p->getA().getY() * p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()))
-    );
+    float x = ((p->getA().getX() * p->getB().getY() - p->getA().getY() *  p->getB().getX())*(q->getA().getX() - q->getB().getX())-(p->getA().getX() - p->getB().getX()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX())*(q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()));
+    float y = ((p->getA().getX() * p->getB().getY() - p->getA().getY() * p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() * q->getB().getY() - q->getA().getY() * q->getB().getX()) / (p->getA().getX() - p->getB().getX()) * (q->getA().getY() - q->getB().getY()) - (p->getA().getY() - p->getB().getY()) * (q->getA().getX() - q->getB().getX()));
+    intersection.set(x,y);
 
     return true;
   }

@@ -2,10 +2,12 @@
 #define SLINTERSECTIONTEST_H_
 
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include <vector>
 #include <set>
 #include <map>
+#include <list>
 #include <ctime>
 #include <cstdlib>
 #include "Point2d.h"
@@ -23,11 +25,12 @@ private:
   clock_t start, stop; /* timestamps */
   long lineCount, intersectionCount; /* count the lines and intersections */
   multimap<float, SLEvent *> xStruct; /* xStruct to Store events depending on x-coordinates */
-  multimap<float, Line *> yStruct; /* yStruct to Store Lines depending on y-coordinates */
+  list<Line *> yStruct; /* yStruct to Store Lines depending on y-coordinates */
   set<Point2d *> intersections;
 
   void open();
   void handleEvent( const SLEvent& );
+  bool intersects( Line *, Line * );
 
 public:
 
