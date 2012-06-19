@@ -95,17 +95,17 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     l2->setYkey( l->getA().getY() );
     l->setYkey( l2->getA().getY() );
 
-    yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
-    yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
+    it = yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
+    it2 = yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
 
-    next = it2;
+    next = it;
     next++;
-    prev = it;
+    prev = it2;
     prev--;
 
     //test intersection with top and bottom line
-    intersects( prev->second, it->second );
-    intersects( it2->second, next->second );
+    intersects( it->second, next->second );
+    intersects( prev->second, it2->second );
 
     break;
   }
