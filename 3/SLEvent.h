@@ -18,6 +18,7 @@ private:
 
   TYPE type;
   Point2d coords;
+
   vector<Line *> lines;
 
 public:
@@ -38,6 +39,13 @@ public:
 
   vector<Line *> getLines() const {
     return lines;
+  }
+
+  /**
+   * returns a pointer to the first Line.
+   */
+  Line * getLine() const {
+    return lines[0];
   }
 
   bool operator<( const SLEvent & q ) const {

@@ -18,11 +18,17 @@ void SLIntersectionTest::open() {
 
 void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
-  list<Line *>::iterator it = yStruct.begin();
-  list<Line *>::iterator it2;
-  list<Line *>::iterator next;
-  list<Line *>::iterator prev;
+  multimap<float, Line *>::iterator it = yStruct.begin();
+  multimap<float, Line *>::iterator it2;
+  multimap<float, Line *>::iterator next;
+  multimap<float, Line *>::iterator prev;
   Point2d intersection; /* the intersection point returned from intersect */
+
+  float key1, key2;
+  if( e.getLine()->getYkey() != 0 )
+    key1 = e.getLine()->getYkey();
+  else
+    key1 = e.getLine()->getA().getY();
 
   switch( e.getType() ) {
   case BEGIN:
@@ -31,28 +37,25 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
      * if it is not the only line in yStruct check it with the lower and higher lines.
      */
 
-    //move the iterator to the position of the line with lower y
-    while( ( e.getLines()[0]->getA().getY() ) > ( ( *it )->getA().getY() ) )
-      it++;
-
-    //insert the line.
-    it = yStruct.insert( it, e.getLines()[0] );
+    //insert a line
+    it = yStruct.insert( pair<float, Line*>( key1, e.getLine() ) );
 
     next = prev = it;
     next++;
     prev--;
 
     //test intersection with top and bottom line
-    intersects( *prev, *it );
-    intersects( *it, *next );
+    intersects( prev->second, it->second );
+    intersects( it->second, next->second );
 
     break;
 
   case END:
     /* at the end of a line check if the new lower and upper line intersect each other. */
 
-    while( *it != e.getLines()[0] )
-      it++;
+    do {
+      it = yStruct.find( key1 );
+    } while( it->second != e.getLine() );
 
     next = prev = it;
     next++;
@@ -60,7 +63,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
     yStruct.erase( it );
 
-    intersects( *prev, *next );
+    intersects( prev->second, next->second );
 
     break;
 
@@ -69,24 +72,40 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
      * note that before the intersection in e.lines[0] is the lower line and e.lines[1] is the upper line.
      **/
     it2 = it;
-    while( *it != e.getLines()[0] )
-      it++;
-    while( *it2 != e.getLines()[1] )
-      it2++;
+    if( e.getLines()[1]->getYkey() != 0 )
+      key2 = e.getLines()[1]->getYkey();
+    else
+      key2 = e.getLines()[1]->getA().getY();
 
-    //swap lines: store line from it2, remove it and insert it before it.
-    Line * l = *it2;
+    do {
+      it = yStruct.find( key1 );
+    } while( it->second != e.getLine() );
+
+    do {
+      it2 = yStruct.find( key2 );
+    } while( it2->second != e.getLines()[1] );
+
+    //swap lines
+    Line * l2 = it2->second;
+    Line *l = it->second;
+
     yStruct.erase( it2 );
-    it2 = yStruct.insert( it, l );
+    yStruct.erase( it );
 
-    next = it;
+    l2->setYkey( l->getA().getY() );
+    l->setYkey( l2->getA().getY() );
+
+    yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
+    yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
+
+    next = it2;
     next++;
-    prev = it2;
+    prev = it;
     prev--;
 
     //test intersection with top and bottom line
-    intersects( *prev, *it );
-    intersects( *it2, *next );
+    intersects( prev->second, it->second );
+    intersects( it2->second, next->second );
 
     break;
   }
@@ -193,9 +212,9 @@ void SLIntersectionTest::parse() {
 
   /* Now create dummy lines with the highest / lowest yValue */
   line = new Line( 0, ymin - 1, 1, ymin - 1 ); // break here and inspect xmin, xmax, ymin, ymax
-  yStruct.push_front( line );
+  yStruct.insert( pair<float, Line *>( line->getA().getY(), line ));
   line = new Line( 0, ymax + 1, 1, ymax + 1 );
-  yStruct.push_back( line );
+  yStruct.insert( pair<float, Line *>( line->getA().getY(), line ));
 
 }
 

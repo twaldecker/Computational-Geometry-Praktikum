@@ -7,6 +7,7 @@
 class Line {
 private:
   Point2d a, b;
+  float ykey; /* the key of the y-struct */
 
 public:
   Line( const Point2d a, const Point2d b );
@@ -25,6 +26,14 @@ public:
    */
   Point2d getB() const {
     return b;
+  }
+
+  float getYkey() const {
+    return ykey;
+  }
+
+  void setYkey(float key) {
+    this->ykey = key;
   }
 
   /**

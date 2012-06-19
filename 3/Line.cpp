@@ -1,12 +1,12 @@
 #include "Line.h"
 
 Line::Line( const Point2d a, const Point2d b ) :
-    a( a ), b( b ) {
+    a( a ), b( b ), ykey(0) {
 
 }
 
 Line::Line( const float ax, const float ay, const float bx, const float by ) :
-    a( ax, ay ), b( bx, by ) {
+    a( ax, ay ), b( bx, by ), ykey(0) {
 
 }
 
@@ -50,21 +50,22 @@ bool Line::intersect( const Line* l, Point2d & intersection ) {
         - ( p->getA().getY() - p->getB().getY() )
             * ( q->getA().getX() - q->getB().getX() );
 
-    if(den <= FLT_EPSILON) return false;
+    if( den <= FLT_EPSILON )
+      return false;
 
-    float x = (( p->getA().getX() * p->getB().getY()
+    float x = ( ( p->getA().getX() * p->getB().getY()
         - p->getA().getY() * p->getB().getX() )
         * ( q->getA().getX() - q->getB().getX() )
         - ( p->getA().getX() - p->getB().getX() )
             * ( q->getA().getX() * q->getB().getY()
-                - q->getA().getY() * q->getB().getX() )) / den;
+                - q->getA().getY() * q->getB().getX() ) ) / den;
 
-    float y = (( p->getA().getX() * p->getB().getY()
+    float y = ( ( p->getA().getX() * p->getB().getY()
         - p->getA().getY() * p->getB().getX() )
         * ( q->getA().getY() - q->getB().getY() )
         - ( p->getA().getY() - p->getB().getY() )
             * ( q->getA().getX() * q->getB().getY()
-                - q->getA().getY() * q->getB().getX() )) / den;
+                - q->getA().getY() * q->getB().getX() ) ) / den;
     intersection.set( x, y );
 
     return true;
