@@ -1,7 +1,7 @@
 #include "SLIntersectionTest.h"
 
 SLIntersectionTest::SLIntersectionTest( string filename ) :
-    filename( filename ), lineCount( 0 ), intersectionCount( 0 ) {
+    filename( filename ), lineCount( 0 ) {
 }
 
 /**
@@ -15,6 +15,24 @@ void SLIntersectionTest::open() {
     exit( 1 );
   }
 }
+
+/**
+ * find the line associated by key in the multimap.
+ */
+bool SLIntersectionTest::yFind(const float key, const Line * line, multimap<float, Line *>::iterator * it) {
+  pair<multimap<float, Line *>::iterator,multimap<float, Line *>::iterator> range; // a pair of iterators. the return value of multimap.equal_range
+
+  range = yStruct.equal_range(key);
+
+
+  for (*it = range.first; *it != range.second; ++(*it)) {
+    if( (*it)->second == line)
+      return true;
+  }
+
+  return false;
+}
+
 
 void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
@@ -53,9 +71,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
   case END:
     /* at the end of a line check if the new lower and upper line intersect each other. */
 
-    do {
-      it = yStruct.find( key1 );
-    } while( it->second != e.getLine() );
+    yFind(key1, e.getLine(), &it);
 
     next = prev = it;
     next++;
@@ -77,13 +93,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     else
       key2 = e.getLines()[1]->getA().getY();
 
-    do {
-      it = yStruct.find( key1 );
-    } while( it->second != e.getLine() );
-
-    do {
-      it2 = yStruct.find( key2 );
-    } while( it2->second != e.getLines()[1] );
+    yFind(key1, e.getLine(), &it);
+    yFind(key2, e.getLines()[1], &it2);
 
     //swap lines
     Line * l2 = it2->second;
@@ -118,24 +129,31 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 bool SLIntersectionTest::intersects( Line * a, Line * b ) {
   Point2d * intersection = new Point2d;
 
+
   if( ( a )->intersect( b, *intersection ) ) {
+    set<Point2d>::iterator it;
+    it = intersections.find(*intersection);
+    if(it == intersections.end()) //Point2d not in set
+    {
     xStruct.insert(
         pair<float, SLEvent *>( intersection->getX(),
             new SLEvent( INTERSECTION, *intersection, *a, *b ) ) );
-    intersections.insert( intersection );
+    intersections.insert( *intersection );
     return true;
+    }
   }
   return false;
 }
 
 void SLIntersectionTest::calculateIntersections() {
 
-  multimap<float, SLEvent *>::iterator it = xStruct.begin();
+  multimap<float, SLEvent *>::iterator it;
 
   start = clock();
-  while( it != xStruct.end() ) {
+  while( !xStruct.empty() ) {
+    it = xStruct.begin();
     SLIntersectionTest::handleEvent( *it->second );
-    it++;
+    xStruct.erase(it);
   }
   stop = clock();
 }
