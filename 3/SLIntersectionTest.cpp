@@ -186,7 +186,7 @@ void SLIntersectionTest::calculateIntersections() {
 
 void SLIntersectionTest::printResults() {
 
-  cerr << "Number of Lines: " << lineCount << endl << intersections.size()
+  cerr << "Number of Lines: " << lineCount << endl << xStruct.size()
       << " intersections" << endl << "calculated in " << getTime() << " seconds"
       << endl;
 
