@@ -128,32 +128,58 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
  */
 bool SLIntersectionTest::intersects( Line * a, Line * b ) {
   Point2d * intersection = new Point2d;
-
+  pair<multimap<float, SLEvent *>::iterator,multimap<float, SLEvent *>::iterator> range; // a pair of iterators. the return value of multimap.equal_range
+  multimap<float, SLEvent *>::iterator it;
 
   if( ( a )->intersect( b, *intersection ) ) {
-    set<Point2d>::iterator it;
-    it = intersections.find(*intersection);
-    if(it == intersections.end()) //Point2d not in set
-    {
+
+    //search if intersection already exists in xstruct.
+    range = xStruct.equal_range(intersection->getX());
+
+    for (it = range.first; it != range.second; it++) {
+      if(
+          (it->second->getType() == INTERSECTION)
+          &&
+          (it->second->getCoords() == *intersection)
+          &&
+          ((it->second->getLines()[0] == a) || (it->second->getLines()[0] == b))
+          &&
+          ((it->second->getLines()[1] == a) || (it->second->getLines()[1] == b))
+        ) {
+        return false;
+      }
+    }
+
+
     xStruct.insert(
         pair<float, SLEvent *>( intersection->getX(),
             new SLEvent( INTERSECTION, *intersection, *a, *b ) ) );
-    intersections.insert( *intersection );
+    //intersections.insert( *intersection );
     return true;
-    }
   }
   return false;
 }
 
+
+/**
+ * This method iterates over the xStruct. If the event was not a intersection event, then it is removed from the map.
+ */
 void SLIntersectionTest::calculateIntersections() {
 
-  multimap<float, SLEvent *>::iterator it;
+  multimap<float, SLEvent *>::iterator it = xStruct.begin();
 
   start = clock();
-  while( !xStruct.empty() ) {
-    it = xStruct.begin();
+  while( it != xStruct.end() ) {
     SLIntersectionTest::handleEvent( *it->second );
-    xStruct.erase(it);
+    if(it->second->getType() != INTERSECTION) {
+      multimap<float, SLEvent *>::iterator next = it;
+      next++;
+      xStruct.erase(it);
+      it = next;
+    }
+    else {
+      it++;
+    }
   }
   stop = clock();
 }
