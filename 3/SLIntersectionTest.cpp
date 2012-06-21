@@ -30,6 +30,16 @@ bool SLIntersectionTest::yFind( const float key, const Line * line,
       return true;
   }
 
+  //normally it should just find the line. Sometimes we don't find a key because of floatin point keys. Here we iterate from the beginning and search for the line address.
+  *it = yStruct.begin();
+
+  while(*it != yStruct.end()) {
+    if((*it)->second == line)
+      return true;
+
+    (*it)++;
+  }
+  cerr << "line not found!" << endl;
   return false;
 }
 
@@ -70,8 +80,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
   case END:
     /* at the end of a line check if the new lower and upper line intersect each other. */
 
-    if( !yFind( key1, e.getLine(), &it ) )
-      cerr << "couldn't find line in yStruct" << endl;
+    yFind( key1, e.getLine(), &it );
 
     next = prev = it;
     next++;
@@ -93,10 +102,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     else
       key2 = e.getLines()[1]->getA().getY();
 
-    if( !yFind( key1, e.getLine(), &it ) )
-      cerr << "couldn't find line in yStruct" << endl;
-    if( !yFind( key2, e.getLines()[1], &it2 ) )
-      cerr << "couldn't find line in yStruct" << endl;
+    yFind( key1, e.getLine(), &it );
+    yFind( key2, e.getLines()[1], &it2 );
 
     //swap lines
     Line * l2 = it2->second;
