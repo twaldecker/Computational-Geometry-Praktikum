@@ -118,10 +118,12 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 void SLIntersectionTest::intersect( Line * a, Line * b ) {
 
   Point2d * ip;
-  vector<Line *> lines;
 
   if( a->intersect( b, ip ) ) {
     if( intersections.find( ip ) == intersections.end() ) {
+
+      vector<Line *> lines;
+
       /* generate new event and store it */
       lines.push_back( a );
       lines.push_back( b );
