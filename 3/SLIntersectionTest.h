@@ -28,6 +28,7 @@ private:
 
   void open();
   void handleEvent( const SLEvent& );
+  void intersect( Line * a, Line * b );
 
 public:
 
