@@ -50,7 +50,7 @@ bool Line::intersect( const Line* l, Point2d & intersection ) {
         - ( p->getA().getY() - p->getB().getY() )
             * ( q->getA().getX() - q->getB().getX() );
 
-    if( den <= FLT_EPSILON )
+    if( fabs(den) <= FLT_EPSILON )
       return false;
 
     float x = ( ( p->getA().getX() * p->getB().getY()
