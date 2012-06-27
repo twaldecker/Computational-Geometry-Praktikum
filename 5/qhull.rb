@@ -12,14 +12,31 @@ print "Praktikum qhull\n"
 # z.B. Erzeugen von 15 Punkten im 8 Dimensionalen Raum:
 # rbox 15 D8
 
-dim = 4
-points = 100000
+command = 'rbox %d D%d | qhull'
+dim_range = 2..3
+point_range = 1e3..1e6
 
-print "calculating convex hull of " + points.to_s + " points in " + dim.to_s + "-D\n"
-output = IO.popen 'rbox '+points.to_s+' D'+dim.to_s+' | qhull'
+f = File.open('measurement.dat', 'w')
 
-m = /CPU seconds to compute hull \(after input\): (.+)/.match output.read
+for dim in dim_range
 
-p m[1]
+    points = point_range.begin
 
+    while points <= point_range.end
 
+        print "calculating convex hull of " + points.to_s + " points in " + dim.to_s + "-D\n"
+        output = IO.popen sprintf(command, points, dim)
+
+        m = /CPU seconds to compute hull \(after input\): (.+)/.match output.read
+        
+        f.puts points.to_s + ' ' + m[1]
+        
+        points *= 10
+    
+    end
+    f.puts "\n"
+end
+
+f.close
+
+system "gnuplot -p -e 'set logscale x; plot \"measurement.dat\"'"
