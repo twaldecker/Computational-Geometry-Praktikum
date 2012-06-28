@@ -17,7 +17,7 @@ point_range = 1e3..1e5
 
 dim_point_range = Array.new()
 
-dim_point_range[2] = 10..1e5
+dim_point_range[2] = 10..1e6
 dim_point_range[3] = 10..1e5
 dim_point_range[4] = 10..1e5
 dim_point_range[5] = 10..1e4
@@ -27,7 +27,7 @@ dim_point_range[8] = 10..1e2
 
 p dim_point_range
 
-colors = ['#e0f0f0', '#c0e0f0', '#a0c0e0', '#80a0e0', '#4080e0', '#4040a0', '#0020c0']
+colors = ['#e0f0f0', '#c0e0f0', '#a0c0e0', '#80a0e0', '#4080e0', '#0020c0', '#4040a0']
 
 f = File.open('measurement.dat', 'w')
 
@@ -66,7 +66,7 @@ set style line 6 lc rgb '#{colors[5]}' lt 1 lw 2 pt 7 ps 1.5;
 set style line 7 lc rgb '#{colors[6]}' lt 1 lw 2 pt 7 ps 1.5;
 set logscale x;
 set logscale y;
-set xrange 1:1e5;
+set xrange [1:1e6];
 plot 'measurement.dat' index 0 with linespoints ls 1 title '2D', 
 '' index 1 with linespoints ls 2 title '3D',
 '' index 2 with linespoints ls 3 title '4D',
