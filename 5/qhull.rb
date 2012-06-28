@@ -1,4 +1,5 @@
 #!/bin/env ruby
+# encoding: utf-8
 
 print "Praktikum qhull\n"
 
@@ -17,13 +18,13 @@ point_range = 1e3..1e5
 
 dim_point_range = Array.new()
 
-dim_point_range[2] = 10..1e6
-dim_point_range[3] = 10..1e5
-dim_point_range[4] = 10..1e5
-dim_point_range[5] = 10..1e4
-dim_point_range[6] = 10..1e3
-dim_point_range[7] = 10..1e3
-dim_point_range[8] = 10..1e2
+dim_point_range[2] = 3e4..1e6
+dim_point_range[3] = 1e4..1e5
+dim_point_range[4] = 1e3..1e5
+dim_point_range[5] = 1e2..1e4
+dim_point_range[6] = 30..1e3
+dim_point_range[7] = 20..5e2
+dim_point_range[8] = 10..25e1
 
 p dim_point_range
 
@@ -36,6 +37,8 @@ for dim in dim_range
     points = dim_point_range[dim].begin
     
     f.puts "# #{dim}D (index #{dim-2})\n# X Y\n"
+    
+    step = (dim_point_range[dim].end - dim_point_range[dim].begin) / 10;
 
     while points <= dim_point_range[dim].end
 
@@ -46,7 +49,7 @@ for dim in dim_range
         
         f.puts points.to_s + ' ' + m[1]
         
-        points *= 10
+        points += step
     
     end
     f.puts "\n\n"
@@ -65,6 +68,9 @@ set style line 5 lc rgb '#{colors[4]}' lt 1 lw 2 pt 7 ps 1.5;
 set style line 6 lc rgb '#{colors[5]}' lt 1 lw 2 pt 7 ps 1.5;
 set style line 7 lc rgb '#{colors[6]}' lt 1 lw 2 pt 7 ps 1.5;
 set logscale x;
+set xlabel 'Anzahl Punkte';
+set ylabel 'Zeit in Sekunden';
+set title 'Berechnung der Konvexen Hülle von Punktmengen im R^n';
 set logscale y;
 set xrange [1:1e6];
 plot 'measurement.dat' index 0 with linespoints ls 1 title '2D', 
