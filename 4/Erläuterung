@@ -1,0 +1,46 @@
+*******************************************************************
+* Erläuterungen zum 4. Praktikum Computational Geometry SoSe 2012 *
+* Thomas Waldecker und Stefan Giggenbach                          *
+*******************************************************************
+
+1) Ein lineares Programm hat die mathematische Form:
+
+   b1 >= a11*x1 + a12*x2 + ... a1n*xn
+   .
+   .
+   .
+   bm >= am1*x1 + am2*x2 + ... amn*xn
+
+   mit der Zielfunktion
+
+   c1*x1 + c2*x2 + ... + cn*xn
+
+2) Um das Problem, den größten einschreibbaren Kreis für ein gegebenes konvexes
+   Polygon zu berechnen wird folgender Ansatz verwendet:
+
+   Für jeden Polygonabschnitt wir die Nebenbedingung
+
+   r <= d*n
+
+   angesetzt. Dabei entspricht d dem Abstandsvektor von einem der beiden Punkte
+   eines Polygonabschnitts a zum Kreismittelpunkt m und n dem
+   Normaleneinheitsvektor, der ins Innere des Polygons zeigt. Deshalb folgt
+
+   r <= d*n = n1*m1 - a1*n1 + n2*m2 - a2*n2 
+
+   stellt man die Formel wie folgt um
+
+   - a1*n1 - a2*n2 >= - n1*m1 - n2*m2 + r
+
+   ist sofort ersichtlich, wie die Koeffizienten des linearen Programms (siehe
+   1) gesetzt werden müssen.
+
+   Als Zielfunktion ergibt sich
+
+   0*m1 + 0*m2 - 1*r
+
+   da der Kreisradius maximiert werden soll.
+
+3) Die Lösung wurde im MATLAB-Skript main.m unter der Verwendung der Funktion
+   vec1norm.m implementiert. Der Code wurde ausfürhlich kommentiert, sodass der
+   hier beschriebene Lösungsansatz nachvollziehbar ist.
