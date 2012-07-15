@@ -32,6 +32,7 @@ private:
   void handleEvent( const SLEvent& );
   bool intersects( Line *, Line *);
   bool yFind(const float, const Line * , multimap<float, Line *>::iterator * );
+  multimap<float, Line*>::iterator  insert(const float, Line * );
 
 
 public:

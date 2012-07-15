@@ -29,8 +29,15 @@ public:
     return b;
   }
 
+  /**
+   * returns the y-value at position x from the line.
+   */
+  float getY ( float x ) {
+    return (b.getY() - a.getY()) / (b.getX() - a.getX()) * (x - a.getX()) + a.getY();
+  }
+
   float getYkey() const {
-    if(this->ykey == 0)
+    if(this->ykey < FLT_EPSILON)
       return this->a.getY();
     else
       return this->ykey;

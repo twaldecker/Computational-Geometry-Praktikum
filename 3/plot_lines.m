@@ -1,7 +1,7 @@
 %% load data
 
 diff = load('diff.dat');
-base = load('strecken/test3.dat');
+base = load('strecken/s_1000_10.dat');
 
 
 %% loop and plot always two lines
@@ -13,5 +13,5 @@ for i = 1:length(base)
 end
 
 for i = 1:length(diff)
-  %plot([diff(i,1), diff(i,3)], [diff(i,2), diff(i,4)], 'r-')
+  plot([diff(i,1), diff(i,3)], [diff(i,2), diff(i,4)], 'r-')
 end

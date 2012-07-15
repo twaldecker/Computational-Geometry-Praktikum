@@ -43,6 +43,14 @@ bool SLIntersectionTest::yFind( const float key, const Line * line,
   return false;
 }
 
+/**
+ * Helper function to set the key in the line and insert it.
+ */
+multimap<float, Line*>::iterator SLIntersectionTest::insert( const float key, Line * l ) {
+  l->setYkey( key );
+  return yStruct.insert( pair<float, Line*>( key, l ) );
+}
+
 void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
   multimap<float, Line *>::iterator it = yStruct.begin();
@@ -63,6 +71,37 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
 
     //insert a line
     it = yStruct.insert( pair<float, Line*>( key1, e.getLine() ) );
+
+    //check both directions for lower or upper lines and update their key:
+    //check lines with higher y
+    //if our startingpoint is left of the line, update their key.
+    it2 = it;
+    it2++;
+    while( it2->second->ccw( e.getLine()->getA() ) > 0 ) {
+      //save line pointer and remove it
+      Line * l = it2->second;
+      yStruct.erase( it2 );
+
+      //calculate the new ykey:
+      this->insert( l->getY( e.getCoords().getX() ), l );
+
+      it2++;
+    }
+
+    //check lines with lower y
+    //if our startingpoint is right of the line, update their key.
+    it2 = it;
+    it2--;
+    while( ( it2->second->ccw( e.getLine()->getA() ) < 0 )
+        && ( it2->second->getA() != e.getLine()->getA() ) ) {
+      //save line pointer and remove it
+      Line * l = it2->second;
+      yStruct.erase( it2 );
+
+      //calculate the new ykey:
+      this->insert( l->getY( e.getCoords().getX() ), l );
+      it2--;
+    }
 
     next = prev = it;
     next++;
@@ -99,41 +138,18 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     yFind( key1, e.getLine(), &it );
     yFind( key2, e.getLines()[1], &it2 );
 
-
     Line * l2 = it2->second;
     Line *l = it->second;
-
-    //initialize
-    Line * lower = l;
-    Line * upper = l2;
-
-    //change if wrong oriented
-    if(key1 > key2) {
-      lower = l2;
-      upper = l;
-    }
-
-    //dont swap lines if:
-    //Point A of the line with the lower key is left from the line with the higher key.
-    if(upper->ccw(lower->getA()) > 0)
-      cerr << "bed" << endl;
 
     yStruct.erase( it2 );
     yStruct.erase( it );
 
-    //if end of the second line is ccw of the first line, then
-    if( ( l->ccw( l2->getA() ) < 0 )
-        && ( l2->getA().getY() > l->getA().getY() ) ) {
-      it = yStruct.insert( pair<float, Line*>( l->getA().getY(), l ) );
-      it2 = yStruct.insert( pair<float, Line*>( l2->getA().getY(), l2 ) );
-    }
-    else {
-      l2->setYkey( l->getA().getY() );
-      l->setYkey( l2->getA().getY() );
+    float l2key = l2->getYkey();
+    l2->setYkey( l->getYkey() );
+    l->setYkey( l2key );
 
-      it = yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
-      it2 = yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
-    }
+    it = yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
+    it2 = yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
 
     next = it;
     next++;

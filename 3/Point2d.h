@@ -25,7 +25,7 @@ public:
     return y;
   }
 
-  void set(float x, float y) {
+  void set( float x, float y ) {
     this->x = x;
     this->y = y;
   }
@@ -56,6 +56,10 @@ public:
 
   bool operator==( const Point2d& q ) {
     return ( ( this->getX() == q.getX() ) && ( this->getY() == q.getY() ) );
+  }
+
+  bool operator!=( const Point2d& q ) {
+    return ( ( this->getX() != q.getX() ) || ( this->getY() != q.getY() ) );
   }
 
   friend std::ostream& operator<<( std::ostream& out, const Point2d& p ) {
