@@ -33,11 +33,11 @@ bool SLIntersectionTest::yFind( const float key, const Line * line,
   //normally it should just find the line. Sometimes we don't find a key because of floatin point keys. Here we iterate from the beginning and search for the line address.
   *it = yStruct.begin();
 
-  while(*it != yStruct.end()) {
-    if((*it)->second == line)
+  while( *it != yStruct.end() ) {
+    if( ( *it )->second == line )
       return true;
 
-    (*it)++;
+    ( *it )++;
   }
   cerr << "line not found!" << endl;
   return false;
@@ -52,10 +52,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
   Point2d intersection; /* the intersection point returned from intersect */
 
   float key1, key2;
-  if( e.getLine()->getYkey() != 0 )
-    key1 = e.getLine()->getYkey();
-  else
-    key1 = e.getLine()->getA().getY();
+  key1 = e.getLine()->getYkey();
 
   switch( e.getType() ) {
   case BEGIN:
@@ -97,26 +94,46 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
      * note that before the intersection in e.lines[0] is the lower line and e.lines[1] is the upper line.
      **/
     it2 = it;
-    if( e.getLines()[1]->getYkey() != 0 )
-      key2 = e.getLines()[1]->getYkey();
-    else
-      key2 = e.getLines()[1]->getA().getY();
+    key2 = e.getLines()[1]->getYkey();
 
     yFind( key1, e.getLine(), &it );
     yFind( key2, e.getLines()[1], &it2 );
 
-    //swap lines
+
     Line * l2 = it2->second;
     Line *l = it->second;
+
+    //initialize
+    Line * lower = l;
+    Line * upper = l2;
+
+    //change if wrong oriented
+    if(key1 > key2) {
+      lower = l2;
+      upper = l;
+    }
+
+    //dont swap lines if:
+    //Point A of the line with the lower key is left from the line with the higher key.
+    if(upper->ccw(lower->getA()) > 0)
+      cerr << "bed" << endl;
 
     yStruct.erase( it2 );
     yStruct.erase( it );
 
-    l2->setYkey( l->getA().getY() );
-    l->setYkey( l2->getA().getY() );
+    //if end of the second line is ccw of the first line, then
+    if( ( l->ccw( l2->getA() ) < 0 )
+        && ( l2->getA().getY() > l->getA().getY() ) ) {
+      it = yStruct.insert( pair<float, Line*>( l->getA().getY(), l ) );
+      it2 = yStruct.insert( pair<float, Line*>( l2->getA().getY(), l2 ) );
+    }
+    else {
+      l2->setYkey( l->getA().getY() );
+      l->setYkey( l2->getA().getY() );
 
-    it = yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
-    it2 = yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
+      it = yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
+      it2 = yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
+    }
 
     next = it;
     next++;
@@ -146,6 +163,7 @@ bool SLIntersectionTest::intersects( Line * a, Line * b ) {
     //search if intersection already exists in xstruct.
     range = xStruct.equal_range( intersection->getX() );
 
+    //whats that? Don't know, maybe check if we had the intersection already.
     for( it = range.first; it != range.second; it++ ) {
       if( ( it->second->getType() == INTERSECTION )
           && ( it->second->getCoords() == *intersection )
@@ -160,7 +178,6 @@ bool SLIntersectionTest::intersects( Line * a, Line * b ) {
     xStruct.insert(
         pair<float, SLEvent *>( intersection->getX(),
             new SLEvent( INTERSECTION, *intersection, *a, *b ) ) );
-    //intersections.insert( *intersection );
     return true;
   }
   return false;
@@ -190,6 +207,12 @@ void SLIntersectionTest::calculateIntersections() {
 }
 
 void SLIntersectionTest::printResults() {
+
+  for( multimap<float, SLEvent *>::iterator it = xStruct.begin();
+      it != xStruct.end(); it++ ) {
+    cout << *( it->second->getLines()[0] ) << "  "
+        << *( it->second->getLines()[1] ) << endl;
+  }
 
   cerr << "Number of Lines: " << lineCount << endl << xStruct.size()
       << " intersections" << endl << "calculated in " << getTime() << " seconds"

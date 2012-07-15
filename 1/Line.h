@@ -3,6 +3,7 @@
 
 #include "Point2d.h"
 #include <cfloat>
+#include <iostream>
 
 class Line {
 private:
@@ -49,6 +50,11 @@ public:
 
   bool operator==( const Line& l ) {
     return ( ( this->getA() == l.getA() ) && ( this->getB() == l.getB() ) );
+  }
+
+  friend std::ostream& operator<<( std::ostream& out, const Line& l ) {
+    out << l.getA() << " " << l.getB();
+    return out;
   }
 
 };

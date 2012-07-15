@@ -3,6 +3,7 @@
 
 #include "Point2d.h"
 #include <cfloat>
+#include <iostream>
 
 class Line {
 private:
@@ -29,7 +30,10 @@ public:
   }
 
   float getYkey() const {
-    return ykey;
+    if(this->ykey == 0)
+      return this->a.getY();
+    else
+      return this->ykey;
   }
 
   void setYkey(float key) {
@@ -55,6 +59,11 @@ public:
    * calculate if this line intersects with the provided Line l
    */
   bool intersect( const Line*, Point2d&  );
+
+  friend std::ostream& operator<<( std::ostream& out, const Line& l ) {
+    out << l.getA() << " " << l.getB();
+    return out;
+  }
 
 };
 
