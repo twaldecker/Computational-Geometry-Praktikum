@@ -46,7 +46,8 @@ bool SLIntersectionTest::yFind( const float key, const Line * line,
 /**
  * Helper function to set the key in the line and insert it.
  */
-multimap<float, Line*>::iterator SLIntersectionTest::insert( const float key, Line * l ) {
+multimap<float, Line*>::iterator SLIntersectionTest::insert( const float key,
+    Line * l ) {
   l->setYkey( key );
   return yStruct.insert( pair<float, Line*>( key, l ) );
 }
@@ -138,28 +139,35 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     yFind( key1, e.getLine(), &it );
     yFind( key2, e.getLines()[1], &it2 );
 
-    Line * l2 = it2->second;
+    Line *l2 = it2->second;
     Line *l = it->second;
 
     yStruct.erase( it2 );
     yStruct.erase( it );
 
-    float l2key = l2->getYkey();
-    l2->setYkey( l->getYkey() );
-    l->setYkey( l2key );
+    key1 = l2->getYkey();
+    key2 = l->getYkey();
 
-    it = yStruct.insert( pair<float, Line*>( l->getYkey(), l ) );
-    it2 = yStruct.insert( pair<float, Line*>( l2->getYkey(), l2 ) );
-
-    next = it;
-    next++;
-    prev = it2;
-    prev--;
+    it = this->insert( key1, l );
+    it2 = this->insert( key2, l2 );
 
     //test intersection with top and bottom line
-    intersects( it->second, next->second );
-    intersects( prev->second, it2->second );
-
+    if( key1 > key2 ) {
+      next = it;
+      prev = it2;
+      next++;
+      prev--;
+      intersects( it->second, next->second );
+      intersects( prev->second, it2->second );
+    }
+    else {
+      next = it2;
+      prev = it;
+      next++;
+      prev--;
+      intersects( it2->second, next->second );
+      intersects( prev->second, it->second );
+    }
     break;
   }
 
