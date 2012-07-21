@@ -33,6 +33,7 @@ private:
   bool intersects( Line *, Line *);
   bool yFind(const float, const Line * , multimap<float, Line *>::iterator * );
   multimap<float, Line*>::iterator  insert(const float, Line * );
+  void fixNeighborsInYStruct(multimap<float, Line *>::iterator, Point2d, float, const SLEvent& );
 
 
 public:

@@ -33,7 +33,11 @@ Analyse mit den Tools:
     thomas@thinky ~/FH/cs/3/cg/pr/3 (git)-[master] % ./analyse.rb
     55.103 11.578 55.3611 11.6755
     55.103 11.578 55.3611 11.6755
-    thomas@thinky ~/FH/cs/3/cg/pr/3 (git)-[master] %                               
+    thomas@thinky ~/FH/cs/3/cg/pr/3 (git)-[master] % 
+    
+Das Sweepline Programm schreibt auch alle Schnittpunkte in eine Datei. Diese werden mit dem Matlab Programm in grün eingezeichnet.
+
+Eine Ausgabe als Beispiel wurde als ausgabe.png Bild abgespeichert.
 
 
 
