@@ -1,12 +1,12 @@
 #include "Line.h"
 
 Line::Line( const Point2d a, const Point2d b ) :
-    a( a ), b( b ), ykey(0) {
+    a( a ), b( b ), ykey( 0 ) {
 
 }
 
 Line::Line( const float ax, const float ay, const float bx, const float by ) :
-    a( ax, ay ), b( bx, by ), ykey(0) {
+    a( ax, ay ), b( bx, by ), ykey( 0 ) {
 
 }
 
@@ -50,7 +50,7 @@ bool Line::intersect( const Line* l, Point2d & intersection ) {
         - ( p->getA().getY() - p->getB().getY() )
             * ( q->getA().getX() - q->getB().getX() );
 
-    if( fabs(den) <= FLT_EPSILON )
+    if( fabs( den ) <= FLT_EPSILON )
       return false;
 
     float x = ( ( p->getA().getX() * p->getB().getY()

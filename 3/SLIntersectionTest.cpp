@@ -57,7 +57,8 @@ multimap<float, Line*>::iterator SLIntersectionTest::insert( const float key,
  *
  */
 void SLIntersectionTest::fixNeighborsInYStruct(
-    multimap<float, Line *>::iterator it, Point2d a, float x, const SLEvent& e ) {
+    multimap<float, Line *>::iterator it, Point2d a, float x,
+    const SLEvent& e ) {
 
   multimap<float, Line *>::iterator it2;
 
@@ -72,12 +73,14 @@ void SLIntersectionTest::fixNeighborsInYStruct(
     this->insert( l->getY( x ), l );
 
     it2++;
+    if( it2->second == e.getLine() )
+      it2++;
+
   }
 
   it2 = it;
   it2--;
-  while( ( it2->second->ccw( a ) < 0 )
-      && ( it2->second->getA() != a ) ) {
+  while( ( it2->second->ccw( a ) < 0 ) && ( it2->second->getA() != a ) ) {
     //save line pointer and remove it
     Line * l = it2->second;
     yStruct.erase( it2 );
@@ -116,7 +119,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     //check lines with higher y
     //if our startingpoint is left of the line, update their key.
 
-    fixNeighborsInYStruct(it, e.getLine()->getA(), e.getCoords().getX(), e);
+    fixNeighborsInYStruct( it, e.getLine()->getA(), e.getCoords().getX(), e );
 
     next = prev = it;
     next++;
@@ -168,8 +171,8 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     it2 = this->insert( key2, l2 );
 
     //fix the yStruct...
-    fixNeighborsInYStruct(it, Point2d(x, l->getY(x)), x, e);
-    fixNeighborsInYStruct(it2, Point2d(x, l->getY(x)), x, e);
+    fixNeighborsInYStruct( it, Point2d( x, l->getY( x ) ), x, e );
+    fixNeighborsInYStruct( it2, Point2d( x, l->getY( x ) ), x, e );
 
     //test intersection with top and bottom line
     if( key1 > key2 ) {

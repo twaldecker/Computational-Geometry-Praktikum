@@ -33,10 +33,16 @@ public:
     return type;
   }
 
+  /**
+   * returns the coordinates of the SLEvent.
+   */
   Point2d getCoords() const {
     return coords;
   }
 
+  /**
+   * Returns the Vector of the (intersecting-)Lines
+   */
   vector<Line *> getLines() const {
     return lines;
   }
@@ -46,18 +52,6 @@ public:
    */
   Line * getLine() const {
     return lines[0];
-  }
-
-  bool operator<( const SLEvent & q ) const {
-    return getCoords().getY() < q.getCoords().getY();
-  }
-
-  static bool compare_x( const SLEvent & a, const SLEvent & b ) {
-    return a.getCoords().getX() < b.getCoords().getX();
-  }
-
-  static bool compare_y( const SLEvent * a, const SLEvent * b ) {
-    return a->getCoords().getY() < b->getCoords().getY();
   }
 
 };

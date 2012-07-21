@@ -32,18 +32,19 @@ public:
   /**
    * returns the y-value at position x from the line.
    */
-  float getY ( float x ) {
-    return (b.getY() - a.getY()) / (b.getX() - a.getX()) * (x - a.getX()) + a.getY();
+  float getY( float x ) {
+    return ( b.getY() - a.getY() ) / ( b.getX() - a.getX() ) * ( x - a.getX() )
+        + a.getY();
   }
 
   float getYkey() const {
-    if(this->ykey < FLT_EPSILON)
+    if( this->ykey < FLT_EPSILON )
       return this->a.getY();
     else
       return this->ykey;
   }
 
-  void setYkey(float key) {
+  void setYkey( float key ) {
     this->ykey = key;
   }
 
@@ -65,7 +66,7 @@ public:
   /**
    * calculate if this line intersects with the provided Line l
    */
-  bool intersect( const Line*, Point2d&  );
+  bool intersect( const Line*, Point2d& );
 
   friend std::ostream& operator<<( std::ostream& out, const Line& l ) {
     out << l.getA() << " " << l.getB();

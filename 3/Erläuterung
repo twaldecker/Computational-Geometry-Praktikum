@@ -1,6 +1,12 @@
 Erläuterung Sweepline Praktikum
 ===============================
 
+
+
+
+
+
+
 Das erste Programm und das Sweepline-Programm wurden so angepasst das sich schneidende Linien in einer Zeile ausgeben werden. Damit kann man die beiden Programme vergleichen.
 
 Ein Ruby skript wurde erstellt das die Ausgaben vergleicht und die nicht gefundenen Schnittlinien ausgibt.
@@ -39,5 +45,10 @@ Das Sweepline Programm schreibt auch alle Schnittpunkte in eine Datei. Diese wer
 
 Eine Ausgabe als Beispiel wurde als ausgabe.png Bild abgespeichert.
 
+Die Datei s_1000_10.dat ergibt bis auf zwei Schnittpunkte das gleiche Ergebnis im ersten und im dritten Praktikum.
+
+Wobei ein "Schnittpunkt" zwei überlappende Strecken sind.
+
+Ein Bild wurde auch erzeugt (s_1000_10_vergleich.png).
 
 

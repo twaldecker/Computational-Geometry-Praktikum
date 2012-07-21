@@ -1,7 +1,7 @@
 %% load data
 
 diff = load('diff.dat');
-base = load('strecken/test5.dat');
+base = load('strecken/s_1000_10.dat');
 
 
 %% loop and plot always two lines
@@ -21,7 +21,7 @@ plot(slint(:,1)', slint(:,2)', 'g+')
 
 %%
 figure, hold on;
-test = load('strecken/test5.dat');
+test = load('strecken/test6.dat');
 for i = 1:length(test)
   plot([test(i,1), test(i,3)], [test(i,2), test(i,4)])
 end
