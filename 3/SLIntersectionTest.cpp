@@ -44,15 +44,6 @@ bool SLIntersectionTest::yFind( const float key, const Line * line,
 }
 
 /**
- * Helper function to set the key in the line and insert it.
- */
-multimap<float, Line*>::iterator SLIntersectionTest::insert( const float key,
-    Line * l ) {
-  l->setYkey( key );
-  return yStruct.insert( pair<float, Line*>( key, l ) );
-}
-
-/**
  * Fixes the yStruct,
  *
  */
@@ -92,6 +83,15 @@ void SLIntersectionTest::fixNeighborsInYStruct(
       it2--;
   }
 
+}
+
+/**
+ * Helper function to set the key in the line and insert it.
+ */
+multimap<float, Line*>::iterator SLIntersectionTest::insert( const float key,
+    Line * l ) {
+  l->setYkey( key );
+  return yStruct.insert( pair<float, Line*>( key, l ) );
 }
 
 void SLIntersectionTest::handleEvent( const SLEvent& e ) {
@@ -156,6 +156,7 @@ void SLIntersectionTest::handleEvent( const SLEvent& e ) {
     yFind( key1, e.getLine(), &it );
     yFind( key2, e.getLines()[1], &it2 );
 
+    /* reorder the lines */
     Line *l2 = it2->second;
     Line *l = it->second;
 

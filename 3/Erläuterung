@@ -1,11 +1,31 @@
 Erläuterung Sweepline Praktikum
 ===============================
 
+Für die x- und y- Strukturen wurde jeweils eine Multimap gewählt. Diese haben jeweils eine float-Zahl als Index. Die xStruktur hat als Wert dann einen Zeiger auf ein SLEvent Objekt.
 
+Die Klasse SLEvent beinhaltet unter anderem den Eventtyp (Beginn, Ende, Intersection) und die Koordinaten des Events.
 
+In der yStruktur sind als Werte Zeiger auf Linien (Line *).
 
+Die Parse methode (SLIntersectionTest::parse()) parst die Datei Zeilenweise und ordnet dabei die x-Koordinaten aufsteigend. Dabei wird auch die mini- und maximale Ausdehnung in x- und y- Richtung berechnet. Es werden dann zwei dummy-Linien eingefügt, eine die garantiert unter allen Linien liegt, und eine die garantiert über allen Linien liegt. Diese Linien schneiden sich auch mit keiner zu prüfenden Linie. Diese Linien in der yStruktur erlauben eine einfachere Überprüfung mit der oberen und unteren Linie, falls nur eine echte Linie in der yStruktur ist.
 
+Die Schleife über die Events ist in der Funktion SLIntersectionTest::calculateIntersections(). Dort werden alle vorhandenen Events nacheinander behandelt. Dabei werden alle nicht-intersection Events direkt nach der Behandlung gelöscht. Die intersection Events werden für die Ausgabe und Auswertung nicht gelöscht. 
 
+Die Events werden dann in einer switch-case Abfrage in der Methode SLIntersectionTest::handleEvent() behandelt.
+
+Event Begin:
+Als key für die yStruktur wird immer zuerst der yWert des ersten Punktes der Linie verwendet. Manchmal kommt es vor, dass eine Linie einen höheren y-Wert als eine andere Linie hat aber trotzdem unter dieser liegt (und umgekehrt). Um dies zu verhindern wurde die Helfermethode fixNeighborsInYStruct(...) geschrieben. In dieser Methode werden diese Probleme gefixt indem diese Linien dann einen neuen yKey zugewiesen bekommen (aktueller y-Wert der Linie an dieser Position).
+
+Falls dieser y-Wert geändert wird muss er auch in der Linie gespeichert Werden (zusätzliche Membervariable) damit eine Linie über ihren Key in der yStruktur wiedergefunden wird.
+
+Event End:
+Um Linien in der yStruktur zu finden wurde eine Helferfunktion yFind geschrieben. Diese Helferfunktion war notwendig um die richtige Linie aus der Struktur zu finden in einer map die mit Floatwerten als keys arbeitet. Sie sucht in der Multimap mit equal_range nach allen Linien die diesen Key haben und vergleicht dann die pointer auf die Linien. Falls die Suche mit equal range fehlschlägt wird als Fallbacklösung über die komplette yStruktur per while-Schleife gesucht.
+
+Event Intersection:
+Um die Linien in der yStruktur zu vertauschen werden die Linien zuerst entfernt und dann mit einem neuen Key eingefügt. Dieser berechnet sich aus dem yWert aus dem aktuellen xWert + 0.0001. Also ein kleines Stück rechts von dem Schnittpunkt. Mit dem Wert 0.0001 erzielten sich die besten Ergebnisse. Nach dem wiedereinfügen müssen auch wieder die Nachbarn gefixed werden. dazu wird wieder fixNeighborsInYStruct(...) verwendet.
+
+Erläuterung zu Fehlersuche und Debugging
+========================================
 
 Das erste Programm und das Sweepline-Programm wurden so angepasst das sich schneidende Linien in einer Zeile ausgeben werden. Damit kann man die beiden Programme vergleichen.
 
